@@ -1,13 +1,8 @@
 <div align="center">
 
-<a href="https://prasadpatil25.github.io"><img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=600&size=20&duration=3200&pause=900&color=5B8CFF&center=true&vCenter=true&width=720&lines=Solution+Architect+%C2%B7+Cloud%2C+AI%2C+Microservices;Quantum+Computing+Researcher+%40+IIIT+Nagpur;Building+the+DOA+framework+%E2%80%94+adaptive+quantum+oracles" alt="Prasad Patil" /></a>
+<a href="https://prasadpatil25.github.io/prasadpatil25/"><img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=600&size=20&duration=3200&pause=900&color=5B8CFF&center=true&vCenter=true&width=720&lines=Solution+Architect+%C2%B7+Cloud%2C+AI%2C+Microservices;Quantum+Computing+Researcher+%40+IIIT+Nagpur;Building+the+DOA+framework+%E2%80%94+adaptive+quantum+oracles" alt="Prasad Patil" /></a>
 
-<p>
-  <a href="https://prasadpatil25.github.io"><img src="https://img.shields.io/badge/Website-prasadpatil25.github.io-5B8CFF?style=flat-square&logo=githubpages&logoColor=white"></a>
-  <a href="https://www.linkedin.com/in/prasad-p-patil"><img src="https://img.shields.io/badge/LinkedIn-prasad--p--patil-0A66C2?style=flat-square&logo=linkedin&logoColor=white"></a>
-  <a href="mailto:prasadpatil252@gmail.com"><img src="https://img.shields.io/badge/Email-contact-B06BFF?style=flat-square&logo=gmail&logoColor=white"></a>
-  <a href="https://scholar.google.com/scholar?q=Prasad+Patil+quantum+DOA"><img src="https://img.shields.io/badge/Scholar-profile-45E0C8?style=flat-square&logo=googlescholar&logoColor=white"></a>
-</p>
+[**Website**](https://prasadpatil25.github.io/prasadpatil25/) &nbsp;·&nbsp; [**LinkedIn**](https://www.linkedin.com/in/prasad-p-patil) &nbsp;·&nbsp; [**Email**](mailto:prasadpatil252@gmail.com) &nbsp;·&nbsp; [**Google Scholar**](https://scholar.google.com/scholar?q=Prasad+Patil+quantum+DOA)
 
 </div>
 
