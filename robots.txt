@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /$
+Allow: /index.html
+Disallow: /index_v0.1.html
+Disallow: /index_0.2.html
+Disallow: /index_v0.3.html
+
+Sitemap: https://prasadpatil25.github.io/prasadpatil25/sitemap.xml
