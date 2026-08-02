@@ -1175,18 +1175,35 @@
         .then(function(d){ if(d && d.count) ok(d.count); else fail(); })
         .catch(fail);
     }
-    function noop(){}
-    function total(){ get(base+"TOTAL.json", show, noop); }
-    /* count.js loads async — wait for it, then use this page's exact path */
+    /* Try each candidate in order; GoatCounter stores paths without a
+       trailing slash, and TOTAL is the whole-site fallback. */
+    function tryList(list){
+      if(!list.length) return;
+      var next=list.slice(1);
+      get(list[0], show, function(){ tryList(next); });
+    }
+    function candidates(path){
+      var c=[];
+      if(path){
+        c.push(base+encodeURIComponent(path)+".json");
+        if(path.length>1 && path.charAt(path.length-1)==="/")
+          c.push(base+encodeURIComponent(path.slice(0,-1))+".json");
+      }
+      c.push(base+"TOTAL.json");
+      return c;
+    }
+    /* count.js loads async (and may be blocked by an ad blocker) — wait
+       briefly for it, then fall back to location.pathname. */
     var tries=0, t=setInterval(function(){
       tries++;
-      if(window.goatcounter && window.goatcounter.get_data){
+      var ready=window.goatcounter && window.goatcounter.get_data;
+      if(ready || tries>30){
         clearInterval(t);
         var path=null;
-        try{ path=window.goatcounter.get_data()["p"]; }catch(e){}
-        if(path) get(base+encodeURIComponent(path)+".json", show, total);
-        else total();
-      } else if(tries>30){ clearInterval(t); total(); }
+        if(ready){ try{ path=window.goatcounter.get_data()["p"]; }catch(e){} }
+        if(!path) path=location.pathname;
+        tryList(candidates(path));
+      }
     },100);
   })();
 
