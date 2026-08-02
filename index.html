@@ -326,6 +326,7 @@
   .obs{display:inline-flex; align-items:center; gap:7px;}
   .obs i{width:6px; height:6px; border-radius:50%; background:var(--grad); flex:none;}
   .obs b{font-weight:500; color:var(--mut); font-variant-numeric:tabular-nums;}
+  .obs .ket{color:var(--mut);}
   .obs[hidden]{display:none;}
 
   .toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--ink); color:var(--paper);
@@ -747,7 +748,7 @@
   <footer>
     <div class="wrap fin">
       <span>Nagpur · Maharashtra · India</span>
-      <span class="obs" id="obs" hidden><i></i>observed <b id="obsn">—</b> times</span>
+      <span class="obs" id="obs" hidden title="Each visit collapses this page's state — visitor count via GoatCounter"><i></i><span class="ket">|&psi;&#10217;</span> observed <b id="obsn">—</b> times</span>
       <span>Interference — built from scratch · GitHub Pages · your cursor is entangled</span>
     </div>
   </footer>
@@ -1166,12 +1167,27 @@
   (function(){
     var box=document.getElementById("obs"), n=document.getElementById("obsn");
     if(!box||!n) return;
-    fetch("https://prasadpatil25.goatcounter.com/counter/TOTAL.json")
-      .then(function(r){return r.ok?r.json():null;})
-      .then(function(d){
-        if(!d||!d.count) return;
-        n.textContent=d.count; box.hidden=false;
-      }).catch(function(){});
+    var base="https://prasadpatil25.goatcounter.com/counter/";
+    function show(v){ n.textContent=v; box.hidden=false; }
+    function get(url, ok, fail){
+      fetch(url)
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(d){ if(d && d.count) ok(d.count); else fail(); })
+        .catch(fail);
+    }
+    function noop(){}
+    function total(){ get(base+"TOTAL.json", show, noop); }
+    /* count.js loads async — wait for it, then use this page's exact path */
+    var tries=0, t=setInterval(function(){
+      tries++;
+      if(window.goatcounter && window.goatcounter.get_data){
+        clearInterval(t);
+        var path=null;
+        try{ path=window.goatcounter.get_data()["p"]; }catch(e){}
+        if(path) get(base+encodeURIComponent(path)+".json", show, total);
+        else total();
+      } else if(tries>30){ clearInterval(t); total(); }
+    },100);
   })();
 
   /* ---------- GitHub stars ---------- */
