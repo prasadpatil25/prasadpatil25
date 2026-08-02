@@ -161,6 +161,28 @@
   @media (prefers-reduced-motion: reduce){.gbar{transition:none;}}
   .gbar.hit{background:var(--k0);}
   .gbar.miss{background:var(--k1);}
+  /* DOA head-to-head */
+  .dd{margin-top:20px; background:var(--paper2); border:1px solid var(--hair); border-radius:18px; padding:20px 22px;}
+  .dd-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:16px 0 4px;}
+  @media(max-width:720px){.dd-grid{grid-template-columns:1fr;}}
+  .dd-p{border:1px solid var(--hair); border-radius:14px; padding:14px 15px 12px;}
+  .dd-p.win{border-color:color-mix(in srgb,var(--k0) 55%,transparent);}
+  .dd-t{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:2px;}
+  .dd-t h4{font-family:var(--fd); font-weight:700; font-size:.98rem; margin:0;}
+  .dd-t .u{font-family:var(--fm); font-size:.68rem; color:var(--dim);}
+  .dd-f{font-family:var(--fm); font-size:.68rem; color:var(--mut); margin:0 0 10px;}
+  .dd-bars{display:flex; align-items:flex-end; gap:2px; height:96px;}
+  .dd-bar{flex:1; min-height:2px; border-radius:2px 2px 0 0; background:color-mix(in srgb,var(--mut) 32%,transparent); transition:height .22s var(--ease);}
+  @media (prefers-reduced-motion: reduce){.dd-bar{transition:none;}}
+  .dd-p.fx .dd-bar.m{background:var(--k1);} .dd-p.ad .dd-bar.m{background:var(--k0);}
+  .dd-n{display:flex; justify-content:space-between; align-items:baseline; margin-top:10px;}
+  .dd-n b{font-family:var(--fd); font-weight:800; font-size:1.5rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums;}
+  .dd-p.fx .dd-n b{color:var(--k1);} .dd-p.ad .dd-n b{color:var(--k0);}
+  .dd-n span{font-family:var(--fm); font-size:.68rem; color:var(--mut);}
+  .dd-plot{position:relative; height:170px; margin:14px 0 6px;}
+  .dd-plot canvas{position:absolute; inset:0; width:100%; height:100%;}
+  .dd-key{display:flex; gap:16px; justify-content:center; font-family:var(--fm); font-size:.68rem; color:var(--mut); margin-bottom:12px;}
+  .dd-key i{display:inline-block; width:14px; height:2px; margin-right:6px; vertical-align:middle;}
 
   /* superposition-collapse titles */
   .qt{position:relative; display:inline-block;}
@@ -560,6 +582,46 @@
           <button class="q-btn" id="greset">Reset</button>
         </div>
         <p class="q-cap">One state is secretly marked. Each query, the oracle flips its phase and diffusion amplifies it — watch probability concentrate in ~&radic;N queries, then <b>Measure</b>. That's the textbook <em>fixed</em> oracle; <b>DOA asks what changes when the oracle itself can adapt.</b></p>
+      </div>
+      <div class="dd reveal" id="doad">
+        <div class="q-head">
+          <span class="q-lab">Fixed vs adaptive oracle &middot; same target, same start</span>
+          <span class="g-n" role="group" aria-label="Search space size">
+            <button class="q-btn nbtn" data-dn="8">8</button>
+            <button class="q-btn nbtn on" data-dn="16">16</button>
+            <button class="q-btn nbtn" data-dn="32">32</button>
+            <button class="q-btn nbtn" data-dn="64">64</button>
+          </span>
+        </div>
+
+        <div class="dd-grid">
+          <div class="dd-p fx" id="ddpF">
+            <div class="dd-t"><h4>Fixed oracle</h4><span class="u">U&#402;</span></div>
+            <p class="dd-f">phase &theta; = 180&deg; &mdash; every query, forever</p>
+            <div class="dd-bars" id="ddbF" aria-hidden="true"></div>
+            <div class="dd-n"><b id="ddpvF">6%</b><span id="ddthF">&theta; 180&deg;</span></div>
+          </div>
+          <div class="dd-p ad" id="ddpA">
+            <div class="dd-t"><h4>Adaptive oracle</h4><span class="u">U&#402;(&theta;)</span></div>
+            <p class="dd-f">phase &theta; re-tuned from feedback each round</p>
+            <div class="dd-bars" id="ddbA" aria-hidden="true"></div>
+            <div class="dd-n"><b id="ddpvA">6%</b><span id="ddthA">&theta; 180&deg;</span></div>
+          </div>
+        </div>
+
+        <div class="dd-plot"><canvas id="ddplot" aria-hidden="true"></canvas></div>
+        <div class="dd-key">
+          <span><i style="background:#C7519E"></i>fixed</span>
+          <span><i style="background:#0E8A76"></i>adaptive</span>
+          <span id="ddq">0 queries</span>
+        </div>
+
+        <div class="q-act">
+          <button class="q-btn solid" id="ddstep">Step</button>
+          <button class="q-btn" id="ddrun">Run</button>
+          <button class="q-btn" id="ddreset">Reset</button>
+        </div>
+        <p class="q-cap" id="ddcap">Both start identically. The fixed oracle keeps rotating past the target and <b>tears its own amplitude back down</b> &mdash; it has no way to know it already arrived. The adaptive oracle reads the outcome each round, re-tunes &theta;, and locks on. <span style="color:var(--dim)">Schematic illustration of the DOA idea &mdash; a greedy feedback rule stands in for the adaptation strategy; not a reproduction of the paper's results.</span></p>
       </div>
     </div>
   </section>
@@ -977,6 +1039,127 @@
     bMeas.addEventListener("click",measure);
     bReset.addEventListener("click",init);
     init();
+  })();
+
+  /* ---------- DOA: fixed vs adaptive oracle ---------- */
+  (function(){
+    var host=document.getElementById("doad"); if(!host) return;
+    var bF=document.getElementById("ddbF"), bA=document.getElementById("ddbA"),
+        pvF=document.getElementById("ddpvF"), pvA=document.getElementById("ddpvA"),
+        thF=document.getElementById("ddthF"), thA=document.getElementById("ddthA"),
+        qEl=document.getElementById("ddq"), panelA=document.getElementById("ddpA"),
+        cv=document.getElementById("ddplot"), ctx=cv.getContext("2d");
+    var N=16, marked=0, fx=null, ad=null, hF=[], hA=[], q=0, timer=null, barsF=[], barsA=[];
+
+    function fresh(){var a=1/Math.sqrt(N);return {amr:a,ami:0,aur:a,aui:0,th:Math.PI};}
+    function prob(s){return s.amr*s.amr + s.ami*s.ami;}
+    function step(s,th){
+      var c=Math.cos(th), si=Math.sin(th);
+      var amr=s.amr*c - s.ami*si, ami=s.amr*si + s.ami*c;
+      var aur=s.aur, aui=s.aui, inv=1/Math.sqrt(N);
+      var Sr=inv*(amr+(N-1)*aur), Si=inv*(ami+(N-1)*aui);
+      var fr=c-1, fi=si;
+      var ar=(fr*Sr-fi*Si)*inv, ai=(fr*Si+fi*Sr)*inv;
+      return {amr:amr+ar, ami:ami+ai, aur:aur+ar, aui:aui+ai, th:th};
+    }
+    function bestTheta(s){
+      var best=-1, bth=0;
+      for(var i=0;i<=360;i++){
+        var th=i*Math.PI/180, c=step(s,th), pr=prob(c);
+        if(pr>best){best=pr;bth=th;}
+      }
+      return bth;
+    }
+    function build(){
+      bF.innerHTML=""; bA.innerHTML=""; barsF=[]; barsA=[];
+      for(var i=0;i<N;i++){
+        var d1=document.createElement("i"), d2=document.createElement("i");
+        d1.className="dd-bar"+(i===marked?" m":""); d2.className="dd-bar"+(i===marked?" m":"");
+        bF.appendChild(d1); bA.appendChild(d2); barsF.push(d1); barsA.push(d2);
+      }
+    }
+    function paint(bars,s){
+      var pm=prob(s), pu=Math.max(0,(1-pm)/(N-1)), mx=Math.max(pm,pu)||1;
+      for(var i=0;i<N;i++){
+        var v=(i===marked?pm:pu)/mx;
+        bars[i].style.height=Math.max(2,v*100)+"%";
+      }
+    }
+    function plot(){
+      var r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2);
+      cv.width=r.width*dpr; cv.height=r.height*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      var W=r.width, H=r.height, pad=6, n=Math.max(hF.length,2);
+      var cs=getComputedStyle(document.documentElement);
+      var hair=cs.getPropertyValue("--hair").trim()||"#E5E3DA";
+      var dim=cs.getPropertyValue("--dim").trim()||"#9C9CAB";
+      ctx.clearRect(0,0,W,H);
+      ctx.strokeStyle=hair; ctx.lineWidth=1;
+      [0,.5,1].forEach(function(f){
+        var y=pad+(1-f)*(H-2*pad);
+        ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+      });
+      ctx.fillStyle=dim; ctx.font="10px monospace";
+      ctx.fillText("P=1",4,pad+9); ctx.fillText("0",4,H-pad-2);
+      function line(arr,col){
+        if(arr.length<1)return;
+        ctx.strokeStyle=col; ctx.lineWidth=2; ctx.lineJoin="round"; ctx.beginPath();
+        for(var i=0;i<arr.length;i++){
+          var x=(arr.length===1)?0:(i/(n-1))*W;
+          var y=pad+(1-arr[i])*(H-2*pad);
+          if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+        var lx=(arr.length===1)?0:((arr.length-1)/(n-1))*W, ly=pad+(1-arr[arr.length-1])*(H-2*pad);
+        ctx.fillStyle=col; ctx.beginPath(); ctx.arc(lx,ly,3,0,6.2832); ctx.fill();
+      }
+      line(hF,"#C7519E"); line(hA,"#0E8A76");
+    }
+    function render(){
+      paint(barsF,fx); paint(barsA,ad);
+      var pf=prob(fx), pa=prob(ad);
+      pvF.textContent=Math.round(pf*100)+"%"; pvA.textContent=Math.round(pa*100)+"%";
+      thF.innerHTML="&theta; 180&deg;";
+      thA.innerHTML="&theta; "+Math.round(ad.th*180/Math.PI)+"&deg;";
+      qEl.textContent=q+(q===1?" query":" queries");
+      panelA.classList.toggle("win", q>0 && pa>pf+0.02);
+      plot();
+    }
+    function doStep(){
+      fx=step(fx,Math.PI);
+      ad=step(ad,bestTheta(ad));
+      q++; hF.push(prob(fx)); hA.push(prob(ad));
+      if(hF.length>26){hF.shift();hA.shift();}
+      render();
+    }
+    function reset(){
+      if(timer){clearInterval(timer);timer=null;document.getElementById("ddrun").textContent="Run";}
+      fx=fresh(); ad=fresh(); q=0; hF=[prob(fx)]; hA=[prob(ad)];
+      marked=Math.floor(Math.random()*N);
+      build(); render();
+    }
+    document.querySelectorAll("[data-dn]").forEach(function(b){
+      b.addEventListener("click",function(){
+        N=parseInt(b.getAttribute("data-dn"),10);
+        document.querySelectorAll("[data-dn]").forEach(function(x){x.classList.toggle("on",x===b);});
+        reset();
+      });
+    });
+    document.getElementById("ddstep").addEventListener("click",doStep);
+    var runB=document.getElementById("ddrun");
+    if(reduce){runB.style.display="none";}
+    else{
+      runB.addEventListener("click",function(){
+        if(timer){clearInterval(timer);timer=null;runB.textContent="Run";return;}
+        runB.textContent="Pause";
+        timer=setInterval(function(){
+          doStep();
+          if(q>=Math.max(12,Math.ceil(Math.PI/2*Math.sqrt(N)))){clearInterval(timer);timer=null;runB.textContent="Run";}
+        },420);
+      });
+    }
+    document.getElementById("ddreset").addEventListener("click",reset);
+    addEventListener("resize",function(){if(fx)plot();});
+    reset();
   })();
 
   /* ---------- observation count (GoatCounter) ---------- */
