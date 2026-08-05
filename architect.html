@@ -16,8 +16,12 @@
 <meta property="og:title" content="Prasad Patil — Solution Architect · Cloud, AI &amp; Microservices">
 <meta property="og:description" content="Fifteen years moving legacy enterprise estates to cloud-native architecture. Mainframe to microservices, on Azure, with GenAI-assisted migration.">
 <meta property="og:url" content="https://prasadpatil25.github.io/prasadpatil25/architect.html">
-<meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card.png">
+<meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card-architect.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prasad Patil — Monolith to Mesh. Solution Architect: cloud, AI and microservices.">
 <meta name="twitter:card" content="summary_large_image">
+<script data-goatcounter="https://prasadpatil25.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -216,6 +220,10 @@
   .contact p{color:var(--mute); max-width:52ch; margin:0 0 26px;}
   .links{display:flex; flex-wrap:wrap; gap:8px;}
   footer{border-top:1px solid var(--rule); padding:22px 0;}
+  .hits{display:inline-flex; align-items:center; gap:7px;}
+  .hits i{width:6px; height:6px; border-radius:50%; background:var(--mesh); flex:none;}
+  .hits b{font-weight:500; color:var(--mute); font-variant-numeric:tabular-nums;}
+  .hits[hidden]{display:none;}
   .foot{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
     font-family:var(--fm); font-size:.7rem; color:var(--dim);}
 
@@ -568,6 +576,7 @@ PROCEDURE DIVISION.
 <footer>
   <div class="wrap foot">
     <span>Nagpur · Maharashtra · India</span>
+    <span class="hits" id="hits" hidden title="Visits to this page"><i></i><b id="hitsn">—</b>&nbsp;visits</span>
     <span>Monolith → Mesh · built from scratch</span>
   </div>
 </footer>
@@ -770,6 +779,45 @@ PROCEDURE DIVISION.
       timer=setInterval(advance,1100); advance();
     });
     reset.addEventListener("click",clear);
+  })();
+
+  /* ---------- visit count (GoatCounter) ---------- */
+  (function(){
+    var box=document.getElementById("hits"), n=document.getElementById("hitsn");
+    if(!box||!n) return;
+    var base="https://prasadpatil25.goatcounter.com/counter/";
+    function show(v){ n.textContent=v; box.hidden=false; }
+    function get(url, ok, fail){
+      fetch(url).then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(d){ if(d && d.count) ok(d.count); else fail(); }).catch(fail);
+    }
+    function tryList(list){
+      if(!list.length) return;
+      var rest=list.slice(1);
+      get(list[0], show, function(){ tryList(rest); });
+    }
+    function candidates(path){
+      var c=[];
+      if(path){
+        c.push(base+encodeURIComponent(path)+".json");
+        if(path.length>1 && path.charAt(path.length-1)==="/")
+          c.push(base+encodeURIComponent(path.slice(0,-1))+".json");
+      }
+      c.push(base+"TOTAL.json");
+      return c;
+    }
+    /* count.js is async and may be blocked outright — wait briefly, then fall back */
+    var tries=0, t=setInterval(function(){
+      tries++;
+      var ready=window.goatcounter && window.goatcounter.get_data;
+      if(ready || tries>30){
+        clearInterval(t);
+        var path=null;
+        if(ready){ try{ path=window.goatcounter.get_data()["p"]; }catch(e){} }
+        if(!path) path=location.pathname;
+        tryList(candidates(path));
+      }
+    },100);
   })();
 
   /* ---------- trace spans ---------- */
