@@ -161,6 +161,33 @@
   @media (prefers-reduced-motion: reduce){.gbar{transition:none;}}
   .gbar.hit{background:var(--k0);}
   .gbar.miss{background:var(--k1);}
+  /* HQ-DOA pipeline */
+  .hq{margin-top:20px; background:var(--paper2); border:1px solid var(--hair); border-radius:18px; padding:20px 22px;}
+  .hq-steps{list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:16px 0 4px; padding:0;}
+  @media(max-width:640px){.hq-steps{grid-template-columns:1fr;}}
+  .hq-steps li{font-family:var(--fm); font-size:.7rem; color:var(--dim); border:1px solid var(--hair); border-radius:10px;
+    padding:9px 11px; display:flex; align-items:center; gap:9px; transition:.3s var(--ease);}
+  .hq-steps li b{width:19px; height:19px; border-radius:50%; display:grid; place-items:center; flex:none;
+    background:var(--hair); color:var(--paper2); font-size:.66rem; font-weight:600;}
+  .hq-steps li.on{color:var(--ink); border-color:color-mix(in srgb,var(--ir2) 55%,transparent);}
+  .hq-steps li.on b{background:var(--grad); color:#0B0E1A;}
+  .hq-steps li.done{color:var(--mut);} .hq-steps li.done b{background:var(--k0); color:#fff;}
+  .hq-body{display:grid; grid-template-columns:1fr 210px; gap:20px; margin:16px 0 6px; align-items:start;}
+  @media(max-width:640px){.hq-body{grid-template-columns:1fr;}}
+  .hq-grid{display:grid; gap:4px;}
+  .hq-cell{aspect-ratio:1; border-radius:5px; border:1px solid var(--hair); background:transparent;
+    transition:background .35s var(--ease), opacity .4s var(--ease), transform .4s var(--ease), box-shadow .3s var(--ease);}
+  .hq-cell.gone{opacity:0; transform:scale(.25);}
+  .hq-cell.tgt{box-shadow:0 0 0 2px var(--k0);}
+  @media (prefers-reduced-motion: reduce){.hq-cell{transition:none;}}
+  .hq-h{font-family:var(--fm); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--dim); margin:0 0 8px;}
+  .hq-eqs{font-family:var(--fm); font-size:.72rem; line-height:1.75; color:var(--mut); min-height:120px;}
+  .hq-eqs span{display:block;}
+  .hq-eqs span.ind{color:var(--ink);}
+  .hq-eqs span.dep{color:var(--dim);}
+  .hq-read{font-family:var(--fm); font-size:.72rem; color:var(--mut); line-height:1.7; margin:0;}
+  .hq-read b{color:var(--ink); font-weight:500;}
+  .hq-read .win{color:var(--k0);}
   /* DOA head-to-head */
   .dd{margin-top:20px; background:var(--paper2); border:1px solid var(--hair); border-radius:18px; padding:20px 22px;}
   .dd-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:16px 0 4px;}
@@ -332,6 +359,37 @@
   .toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--ink); color:var(--paper);
     font-family:var(--fm); font-size:.78rem; padding:11px 18px; border-radius:999px; opacity:0; pointer-events:none; transition:.3s var(--ease); z-index:90;}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* shared site switcher — same structure as the architecture page */
+  .swx{display:inline-flex; padding:3px; gap:2px; border:1px solid var(--hair); border-radius:8px; background:var(--paper2); vertical-align:middle;}
+  .swx a{font-family:var(--fm); font-size:.72rem; padding:6px 11px; border-radius:6px; color:var(--mut); transition:.18s var(--ease); white-space:nowrap;}
+  .swx a:hover{color:var(--ink);}
+  .swx a[aria-current="page"]{background:var(--ink); color:var(--paper); font-weight:500;}
+
+  /* bridge: rendered in the DESTINATION site's palette, as a preview */
+  .bridgeA{display:block; background:#0A0C11; border:1px solid #212A36; border-radius:14px;
+    padding:26px 28px; position:relative; overflow:hidden; transition:.28s var(--ease);}
+  .bridgeA:hover{transform:translateY(-2px); box-shadow:0 24px 54px -28px rgba(53,214,176,.55);}
+  .bridgeA::after{content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:linear-gradient(rgba(33,42,54,.55) 1px, transparent 1px),linear-gradient(90deg,rgba(33,42,54,.55) 1px,transparent 1px);
+    background-size:38px 38px; opacity:.5;}
+  .bA-in{display:flex; gap:22px; align-items:center; flex-wrap:wrap; position:relative; z-index:1;}
+  .bA-lab{font-family:var(--fm); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase; color:#5D6675; margin:0 0 5px;}
+  .bA-in h3{font-family:var(--fd); font-weight:700; font-size:1.3rem; letter-spacing:-.02em; margin:0 0 7px; color:#E8EEF5;}
+  .bA-in h3 s{text-decoration:none; color:#E8944A;} .bA-in h3 u{text-decoration:none; color:#35D6B0;}
+  .bA-in p{margin:0; color:#8A94A3; font-size:.9rem;}
+  .bA-in p b{color:#E8EEF5; font-weight:600;}
+  .bA-go{font-family:var(--fm); font-size:.78rem; color:#04120E; background:#35D6B0;
+    border-radius:999px; padding:10px 18px; white-space:nowrap; transition:.2s var(--ease);}
+  .bridgeA:hover .bA-go{box-shadow:0 12px 28px -14px #35D6B0;}
+  .bA-viz{flex:none; display:flex; align-items:center; gap:11px;}
+  .bA-mono{width:44px; height:44px; border:1.5px dashed #E8944A; border-radius:7px;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:3px; padding:6px;}
+  .bA-mono i{background:rgba(232,148,74,.55); border-radius:2px;}
+  .bA-arrow{color:#5D6675; font-family:var(--fm); font-size:.9rem;}
+  .bA-mesh{position:relative; width:52px; height:44px;}
+  .bA-mesh i{position:absolute; width:9px; height:9px; border-radius:2px; background:#35D6B0;}
+  @media(max-width:640px){.bA-viz{display:none;}}
   .skip{position:fixed; top:-60px; left:16px; z-index:100; background:var(--ink); color:var(--paper);
     font-family:var(--fm); font-size:.8rem; padding:10px 16px; border-radius:8px; transition:top .2s var(--ease);}
   .skip:focus{top:16px;}
@@ -374,7 +432,7 @@
   <div class="in">
     <span class="name"><i></i>Prasad Patil</span>
     <a class="lnk" href="#signal">Signal</a><a class="lnk" href="#map">Map</a><a class="lnk" href="#research">Research</a>
-    <a class="lnk" href="#path">Path</a><a class="lnk" href="#code">Code</a><a class="lnk" href="#contact">Contact</a><a class="lnk" href="architect.html" style="color:var(--ir2)">Architecture →</a>
+    <a class="lnk" href="#path">Path</a><a class="lnk" href="#code">Code</a><a class="lnk" href="#contact">Contact</a><span class="swx" role="group" aria-label="Site sections" style="margin-left:6px"><a href="./" aria-current="page">Research</a><a href="architect.html">Architecture</a></span>
     <button class="kbtn" id="kmob" aria-label="Toggle light and dark theme" style="margin-left:auto">|1⟩</button>
   </div>
 </div>
@@ -382,7 +440,7 @@
 <main class="page" id="top"><span id="top-anchor"></span>
   <div class="wrap mast">
     <span class="who">Prasad Patil</span>
-    <span class="meta"><i></i>Open to collaboration · Nagpur, IN · IST &nbsp;·&nbsp; <a href="architect.html" style="color:var(--ir2); border-bottom:1px solid transparent" onmouseover="this.style.borderBottomColor='currentColor'" onmouseout="this.style.borderBottomColor='transparent'">Architecture work →</a></span>
+    <span class="meta"><i></i>Open to collaboration · Nagpur, IN · IST &nbsp;&nbsp;<span class="swx" role="group" aria-label="Site sections"><a href="./" aria-current="page">Research</a><a href="architect.html">Architecture</a></span></span>
   </div>
 
   <header class="hero">
@@ -412,7 +470,7 @@
   <section class="sec latest" aria-label="Latest updates">
     <div class="wrap">
       <div class="sh reveal" style="margin-bottom:14px"><span class="lab">Latest</span><span class="rule"></span></div>
-      <div class="lt reveal"><span class="d">2026</span><span><b>&ldquo;Hybrid Quantum DOA Framework&rdquo; published</b> in IEEE Trans. Instrumentation &amp; Measurement — first quantum-computing publication from IIIT Nagpur. <a href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">DOI</a></span></div>
+      <div class="lt reveal"><span class="d">2026</span><span><b>HQ-DOA published</b> &mdash; &ldquo;Quantum State Measurement System With Dynamic Oracle Adaptation&rdquo;, IEEE Trans. Instrumentation &amp; Measurement — first quantum-computing publication from IIIT Nagpur. <a href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">DOI</a></span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>FQ-DOA submitted</b> to IEEE Trans. Emerging Topics in Computing — under review.</span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>MindSpark released</b> — zero-dependency collaborative mind-mapping. <a href="https://github.com/prasadpatil25/MindSpark" target="_blank" rel="noopener">Repo</a></span></div>
       <div class="lt reveal"><span class="d">2024</span><span><b>ACM India Anveshan Setu Fellowship</b> — host mentorship at IIT Hyderabad.</span></div>
@@ -491,7 +549,8 @@
   <section class="sec" id="research">
     <div class="wrap">
       <div class="sh reveal"><span class="lab">Research</span><h2><span class="qt" data-t="Dynamic Oracle Adaptation">Dynamic Oracle Adaptation</span></h2><span class="rule"></span></div>
-      <p class="doa-line reveal">What if a quantum oracle didn't have to be fixed in advance? Instead of hard-coding the black box an algorithm queries, DOA methods let it adapt to the problem — trading a little coherence for a lot of flexibility.</p>
+      <p class="doa-line reveal">What if a quantum oracle didn't have to be fixed in advance? Instead of hard-coding the black box an algorithm queries, DOA methods synthesize it on the fly from what earlier measurements revealed.</p>
+      <p class="doa-line reveal">In <b style="color:var(--ink)">HQ-DOA</b> that means composing two algorithms that are normally used apart: <b style="color:var(--ink)">Simon's</b> period detection uncovers the hidden structure of the problem, DOA turns that structure into a freshly-built oracle, and <b style="color:var(--ink)">Grover's</b> amplitude amplification then searches the space that structure has already cut in half — with no mid-circuit measurement to collapse the state along the way.</p>
       <p class="doa-chips reveal"><b>HQ-DOA</b> hybrid · <b>FQ-DOA</b> fully coherent · <b>QDOA</b> morphological</p>
 
       <figure class="doa-fig reveal">
@@ -539,8 +598,9 @@
       <article class="paper reveal">
         <div>
           <p class="venue">IEEE Transactions on Instrumentation &amp; Measurement · 2026</p>
-          <h3>Hybrid Quantum DOA Framework</h3>
-          <p class="auth">P. Patil · J. Tembhurne · S. J. Choudhury</p>
+          <h3>Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in NISQ Devices</h3>
+          <p class="auth">P. P. Patil · J. Tembhurne · S. J. Choudhury &nbsp;·&nbsp; <span class="mono" style="color:var(--ir3)">HQ-DOA</span></p>
+          <p class="auth" style="margin-top:8px">Integrates Simon&rsquo;s period detection with Grover&rsquo;s amplitude amplification through dynamic oracle adaptation. Eliminates mid-circuit state collapse by synthesizing measurement oracles from period-detection results &mdash; lifting measurement success from <b style="color:var(--ink)">15% to 60% on the IBM Brisbane processor</b>, at query complexity O((2<sup>n&minus;1</sup>/k)<sup>&frac12;</sup>).</p>
           <p class="first">First quantum-computing publication from IIIT Nagpur</p>
         </div>
         <div class="pr">
@@ -563,6 +623,40 @@
           <div class="plinks"><button class="plink" data-bib="fqdoa">Copy BibTeX</button></div>
         </div>
       </article>
+
+      <div class="hq reveal" id="hqd">
+        <div class="q-head">
+          <span class="q-lab">HQ-DOA pipeline &middot; Simon &rarr; adapt &rarr; Grover</span>
+          <span class="g-n" role="group" aria-label="Number of qubits">
+            <button class="q-btn nbtn" data-hn="4">4 qubits</button>
+            <button class="q-btn nbtn on" data-hn="5">5 qubits</button>
+            <button class="q-btn nbtn" data-hn="6">6 qubits</button>
+          </span>
+        </div>
+
+        <ol class="hq-steps" id="hqsteps">
+          <li class="on" data-a="1"><b>1</b> Simon &mdash; find the hidden period</li>
+          <li data-a="2"><b>2</b> DOA &mdash; synthesize the oracle</li>
+          <li data-a="3"><b>3</b> Grover &mdash; amplify the reduced space</li>
+        </ol>
+
+        <div class="hq-body">
+          <div class="hq-grid" id="hqgrid" aria-hidden="true"></div>
+          <aside>
+            <p class="hq-h">constraints &nbsp;y &middot; s = 0</p>
+            <div class="hq-eqs" id="hqeqs"></div>
+            <p class="hq-h" style="margin-top:14px">state</p>
+            <p class="hq-read" id="hqread">&mdash;</p>
+          </aside>
+        </div>
+
+        <div class="q-act">
+          <button class="q-btn solid" id="hqstep">Step</button>
+          <button class="q-btn" id="hqrun">Run</button>
+          <button class="q-btn" id="hqreset">Reset</button>
+        </div>
+        <p class="q-cap">Each Simon query returns one linear constraint on the hidden period <b>s</b>. Once n&minus;1 independent constraints pin it down, DOA rebuilds the oracle around that structure &mdash; and because f(x) = f(x&oplus;s), every state pairs with a partner and <b>the search space folds in half</b>. Grover then runs over what's left, reaching the target in fewer queries than a blind search. <span style="color:var(--dim)">Schematic illustration of the pipeline; the quantum steps are simulated classically, not a reproduction of the paper's hardware results.</span></p>
+      </div>
 
       <div class="grover reveal" id="grover">
         <div class="q-head">
@@ -731,6 +825,30 @@
     </div>
   </section>
 
+  <section class="sec" id="bridge">
+    <div class="wrap">
+      <div class="sh reveal"><span class="lab">The other half</span><h2><span class="qt" data-t="Production code on weekdays">Production code on weekdays</span></h2><span class="rule"></span></div>
+      <a class="bridgeA reveal" href="architect.html">
+        <div class="bA-in">
+          <span class="bA-viz" aria-hidden="true">
+            <span class="bA-mono"><i></i><i></i><i></i><i></i></span>
+            <span class="bA-arrow">&rarr;</span>
+            <span class="bA-mesh">
+              <i style="left:0; top:4px"></i><i style="left:21px; top:0"></i><i style="left:43px; top:6px"></i>
+              <i style="left:4px; top:32px"></i><i style="left:24px; top:35px"></i><i style="left:41px; top:26px"></i>
+            </span>
+          </span>
+          <div style="flex:1 1 340px">
+            <p class="bA-lab">The other half</p>
+            <h3><s>Monolith</s> &rarr; <u>Mesh</u></h3>
+            <p>Fifteen years as a <b>Solution Architect at TCS</b> &mdash; moving legacy enterprise estates to cloud-native architecture. Mainframe and COBOL to Java microservices on Azure, with GenAI reading the code nobody documented. Two granted patents.</p>
+          </div>
+          <span class="bA-go">Architecture work &rarr;</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
   <section class="sec contact" id="contact">
     <div class="wrap">
       <h2 class="reveal">Let's build the <span class="g-ink">improbable.</span></h2>
@@ -868,7 +986,7 @@
   var toast=document.getElementById("toast"), tt;
   function showToast(m){toast.textContent=m;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show");},1600);}
   var bib={
-    hqdoa:'@article{patil2026hqdoa,\n  author  = {Patil, Prasad and Tembhurne, Jitendra and Choudhury, Suvra Jyoti},\n  title   = {Hybrid Quantum DOA Framework},\n  journal = {IEEE Transactions on Instrumentation and Measurement},\n  year    = {2026},\n  doi     = {10.1109/TIM.2026.3659640}\n}',
+    hqdoa:'@article{patil2026hqdoa,\n  author  = {Patil, Prasad and Tembhurne, Jitendra and Choudhury, Suvra Jyoti},\n  title   = {Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in {NISQ} Devices},\n  volume  = {75},\n  journal = {IEEE Transactions on Instrumentation and Measurement},\n  year    = {2026},\n  doi     = {10.1109/TIM.2026.3659640}\n}',
     fqdoa:'@unpublished{patil2026fqdoa,\n  author = {Patil, Prasad and Tembhurne, Jitendra and Choudhury, Suvra Jyoti},\n  title  = {Fully Coherent Dynamic Oracle Adaptation},\n  note   = {Under review, IEEE Transactions on Emerging Topics in Computing},\n  year   = {2026}\n}'};
   document.querySelectorAll("[data-bib]").forEach(function(b){
     b.addEventListener("click",function(){
@@ -1160,6 +1278,137 @@
     }
     document.getElementById("ddreset").addEventListener("click",reset);
     addEventListener("resize",function(){if(fx)plot();});
+    reset();
+  })();
+
+  /* ---------- HQ-DOA pipeline: Simon -> DOA -> Grover ---------- */
+  (function(){
+    var host=document.getElementById("hqd"); if(!host) return;
+    var grid=document.getElementById("hqgrid"), eqs=document.getElementById("hqeqs"),
+        read=document.getElementById("hqread"), steps=document.getElementById("hqsteps"),
+        bStep=document.getElementById("hqstep"), bRun=document.getElementById("hqrun"),
+        bReset=document.getElementById("hqreset");
+    var n=5,N=32,s=1,basis={},rank=0,q=0,act=1,cells=[],live=[],tgt=0,gt=0,timer=null,busy=false;
+
+    function pop(x){var c=0;while(x){c+=x&1;x>>=1;}return c;}
+    function bits(x){return x.toString(2).replace(/^0+(?=.)/,"").padStart(n,"0");}
+    function setAct(a){
+      act=a;
+      Array.prototype.forEach.call(steps.children,function(li){
+        var v=+li.getAttribute("data-a");
+        li.classList.toggle("on",v===a); li.classList.toggle("done",v<a);
+      });
+    }
+    function cols(count){return count<=16?4:8;}
+    function build(){
+      grid.innerHTML=""; cells=[];
+      grid.style.gridTemplateColumns="repeat("+cols(N)+",1fr)";
+      for(var i=0;i<N;i++){
+        var d=document.createElement("div");
+        d.className="hq-cell";
+        d.style.background="rgba(123,155,255,0.10)";
+        grid.appendChild(d); cells.push(d);
+      }
+    }
+    function simon(){
+      var y=Math.floor(Math.random()*N);
+      if(pop(y&s)%2===1) y^=(s&-s);
+      q++;
+      var v=y, indep=false;
+      for(var b=n-1;b>=0;b--){
+        if(!((v>>b)&1)) continue;
+        if(basis[b]===undefined){basis[b]=v;rank++;indep=true;break;}
+        v^=basis[b];
+      }
+      var sp=document.createElement("span");
+      sp.className=indep?"ind":"dep";
+      sp.textContent=(indep?"+ ":"· ")+bits(y);
+      eqs.appendChild(sp);
+      while(eqs.childNodes.length>7) eqs.removeChild(eqs.firstChild);
+      read.innerHTML="queries <b>"+q+"</b><br>rank <b>"+rank+"</b> / "+(n-1)+
+        (rank>=n-1?"<br><span class='win'>period recovered</span>":"");
+      if(rank>=n-1) setAct(2);
+    }
+    function fold(){
+      busy=true;
+      var reduce2=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      for(var i=0;i<N;i++){
+        var cls=Math.min(i,i^s), hue=(cls*47)%360;
+        cells[i].style.background="hsla("+hue+",65%,55%,.55)";
+      }
+      read.innerHTML="period <b>s = "+bits(s)+"</b><br>f(x) = f(x&oplus;s)<br>oracle re-synthesized";
+      var doCollapse=function(){
+        for(var i=0;i<N;i++) if(i>(i^s)) cells[i].classList.add("gone");
+        var finish=function(){
+          live=[];
+          for(var i=0;i<N;i++){
+            if(i>(i^s)){ cells[i].style.display="none"; }
+            else { live.push(i); }
+          }
+          grid.style.gridTemplateColumns="repeat("+cols(live.length)+",1fr)";
+          tgt=live[Math.floor(Math.random()*live.length)];
+          for(var j=0;j<live.length;j++){
+            cells[live[j]].style.background="rgba(123,155,255,0.12)";
+            if(live[j]===tgt) cells[live[j]].classList.add("tgt");
+          }
+          read.innerHTML="period <b>s = "+bits(s)+"</b><br>space folded <b>"+N+" &rarr; "+live.length+"</b><br>target marked";
+          setAct(3); busy=false;
+        };
+        if(reduce2) finish(); else setTimeout(finish,430);
+      };
+      if(reduce2) doCollapse(); else setTimeout(doCollapse,620);
+    }
+    function grover(){
+      gt++;
+      var M=live.length;
+      var th=Math.asin(Math.min(1,1/Math.sqrt(M))), th0=Math.asin(Math.min(1,1/Math.sqrt(N)));
+      var pT=Math.pow(Math.sin((2*gt+1)*th),2);
+      var pOther=(1-pT)/Math.max(1,M-1);
+      var pBlind=Math.pow(Math.sin((2*gt+1)*th0),2);
+      var mx=Math.max(pT,pOther)||1;
+      for(var j=0;j<M;j++){
+        var v=live[j], f=(v===tgt?pT:pOther)/mx;
+        cells[v].style.background=(v===tgt?"rgba(14,138,118,":"rgba(123,155,255,")+(0.10+f*0.85)+")";
+      }
+      var tOpt=Math.round(Math.PI/(4*th)-0.5), tBl=Math.round(Math.PI/(4*th0)-0.5);
+      read.innerHTML="Grover iteration <b>"+gt+"</b><br>P(target) <b class='win'>"+Math.round(pT*100)+"%</b>"+
+        "<br>blind search <b>"+Math.round(pBlind*100)+"%</b>"+
+        "<br><br>peak: <b>"+tOpt+"</b> queries vs <b>"+tBl+"</b> blind";
+    }
+    function step(){
+      if(busy) return;
+      if(act===1) simon();
+      else if(act===2) fold();
+      else grover();
+    }
+    function stop(){ if(timer){clearInterval(timer);timer=null;} bRun.textContent="Run"; }
+    function reset(){
+      stop();
+      N=1<<n; s=1+Math.floor(Math.random()*(N-1));
+      basis={}; rank=0; q=0; gt=0; live=[]; busy=false;
+      eqs.innerHTML=""; read.innerHTML="queries <b>0</b><br>rank <b>0</b> / "+(n-1);
+      setAct(1); build();
+    }
+    document.querySelectorAll("[data-hn]").forEach(function(b){
+      b.addEventListener("click",function(){
+        n=parseInt(b.getAttribute("data-hn"),10);
+        document.querySelectorAll("[data-hn]").forEach(function(x){x.classList.toggle("on",x===b);});
+        reset();
+      });
+    });
+    bStep.addEventListener("click",step);
+    bReset.addEventListener("click",reset);
+    if(reduce){ bRun.style.display="none"; }
+    else{
+      bRun.addEventListener("click",function(){
+        if(timer){stop();return;}
+        bRun.textContent="Pause";
+        timer=setInterval(function(){
+          step();
+          if(act===3 && gt>=Math.ceil(Math.PI/4*Math.sqrt(N))+1) stop();
+        },700);
+      });
+    }
     reset();
   })();
 

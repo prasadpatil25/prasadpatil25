@@ -1,8 +1,13 @@
+# NOTE: this file only takes effect if the site is served from the DOMAIN ROOT
+# (prasadpatil25.github.io/robots.txt). On a project path it is ignored by
+# crawlers — the reliable fix for the old builds is to delete them.
+
 User-agent: *
-Allow: /$
-Allow: /index.html
-Disallow: /index_v0.1.html
-Disallow: /index_0.2.html
-Disallow: /index_v0.3.html
+Allow: /
+
+Disallow: /prasadpatil25/index_v0.1.html
+Disallow: /prasadpatil25/index_v0.2.html
+Disallow: /prasadpatil25/index_v0.3.html
+Disallow: /prasadpatil25/index_v0.4.html
 
 Sitemap: https://prasadpatil25.github.io/prasadpatil25/sitemap.xml
