@@ -267,9 +267,12 @@
     .bar,.skip,.tgl,.swx,#decompose,#pipeline,#research,.hits,.row,.links,footer{display:none !important;}
     html,body{background:#fff !important; color:#000 !important; font-size:10.5pt;}
     .wrap{max-width:none; padding-inline:0;}
-    .sec{padding:14px 0; border-bottom:1px solid #ccc; break-inside:avoid;}
-    .hero{padding:0 0 14px; border-bottom:1px solid #ccc;}
-    h1{font-size:24pt; max-width:none; color:#000 !important;}
+    /* Long sections must flow across page breaks. Forbidding it pushed whole
+       sections onto the next sheet and left pages half empty. */
+    .sec{padding:11px 0; border-bottom:1px solid #ccc; break-inside:auto;}
+    .hero{padding:0 0 11px; border-bottom:1px solid #ccc;}
+    .eyebrow{margin:0 0 8px;}
+    h1{font-size:21pt; max-width:none; margin:0 0 9px; color:#000 !important;}
     h1 span,.eyebrow s,.eyebrow u{color:#000 !important;}
     .head h2{font-size:13pt;}
     .lede,.head p,.blk li,.pao p,.span-detail li,.tj p{color:#222 !important;}
@@ -283,8 +286,22 @@
     .trace{border:0;} .span-row{border-color:#ccc;}
     .rev{opacity:1 !important; transform:none !important;}
     a{color:#000 !important; text-decoration:none;}
-    .quotes{grid-template-columns:1fr 1fr;}
+    .quotes{grid-template-columns:1fr 1fr; gap:10px;}
     .quote{background:#fff !important; border-color:#bbb !important;}
+    /* never strand a heading at the foot of a page ... */
+    .head,h1,h2,h3{break-after:avoid;}
+    /* ... but keep each entry whole */
+    .case,.blk,.span-row,.quote,.contact,.stats{break-inside:avoid;}
+    .head{margin-bottom:11px;}
+    .lede{margin:0 0 11px; max-width:none;}
+    .stats{margin-bottom:0;} .stat{padding:9px 12px;}
+    .stat b{font-size:1.15rem;}
+    .cases{gap:9px;} .case{padding:13px 15px;} .case-t{margin-bottom:8px;}
+    .pao{gap:11px;} .cols{gap:16px;} .blk ul{gap:7px;}
+    .contact{padding:14px 0;}
+    .contact h2{font-size:14pt; margin:0 0 6px;}
+    .contact p{margin:0; max-width:none;}
+    .span-detail ul{gap:4px;} .span-detail li{font-size:9.5pt;}
   }
   @media (prefers-reduced-motion: reduce){.rev{opacity:1; transform:none; transition:none;}}
 </style>

@@ -395,17 +395,42 @@
   .skip:focus{top:16px;}
 
   @media print{
-    .rail,.mtop,.skip,#ent,#field,.toast,.cta,.q-act,.g-act,.qubit,.grover,.ls-field,.legend,.obs{display:none !important;}
-    body{background:#fff; color:#000; font-size:11pt;}
+    @page{ margin:12mm; }
+    /* Interactive pieces render as empty boxes on paper — drop them and their
+       headings, rather than printing a title over a blank rectangle. */
+    .rail,.mtop,.skip,#ent,#field,.grid-lines,.toast,.cta,.q-act,.g-act,.swx,
+    .qubit,.grover,#hqd,#doad,#map,#bridge,.ls-field,.legend,.obs,
+    .pub-links,.arch-cap{display:none !important;}
+    html,body{background:#fff !important; color:#000 !important; font-size:10pt; line-height:1.45;}
     .page{margin-left:0;}
-    .sec{padding:18px 0; border-top:1px solid #ccc; break-inside:avoid;}
-    .hero-in{padding:12px 0; grid-template-columns:1fr;}
-    .arch{width:120px;}
-    h1{font-size:28pt;} .sec-title,.sh h2{font-size:15pt;}
+    .wrap{max-width:none; padding-inline:0;}
+    /* Long sections must be allowed to flow across a page break. Forbidding it
+       pushed whole sections onto the next sheet and left pages half empty. */
+    .sec{padding:11px 0; border-top:1px solid #ccc; break-inside:auto;}
+    header{padding:0;}
+    .hero-in{padding:0 0 8px; grid-template-columns:1fr; gap:9px;}
+    .arch-wrap{justify-items:start;} .arch{width:92px; padding:2px;}
+    .kick{margin:0 0 8px;}
+    h1{font-size:21pt; margin:0 0 8px;}
+    .sub{font-size:10.5pt; max-width:none; margin:0 0 6px;}
+    .facts{margin:0;}
+    .sh{margin-bottom:9px;} .sh h2{font-size:12.5pt;}
+    /* never strand a heading at the foot of a page */
+    .sh,h1,h2,h3{break-after:avoid;}
+    /* but keep individual entries whole */
+    .paper,.tj,.os,.rc,.lt,.doa-fig,.contact{break-inside:avoid;}
+    .sig-grid{gap:16px;} .rec{gap:14px;} .pubs{gap:8px;}
+    .lt{padding:5px 0;} .tj{padding:12px 0;} .os{padding:12px 0;} .paper{padding:14px 0;}
+    .research-intro,.doa-line,.map-intro{margin-bottom:8px;}
+    .contact{padding:14px 0; text-align:left;}
+    .contact h2{font-size:14pt; margin:0 0 6px;}
+    .contact p{margin:0 0 8px; max-width:none;}
+    .clinks{justify-content:flex-start;}
     .g-ink,.sig-grid .lead em{-webkit-text-fill-color:#000; color:#000; background:none;}
-    a{text-decoration:underline;}
     .qt::before,.qt::after{display:none;}
     .reveal{opacity:1 !important; transform:none !important;}
+    a{color:#000 !important; text-decoration:none;}
+    footer{padding:8px 0;}
   }
   #ent{position:fixed; inset:0; z-index:55; pointer-events:none;}
 </style>
