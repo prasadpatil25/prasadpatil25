@@ -28,17 +28,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#9C9CAB; --hair:#E5E3DA;
+    --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#6A6A78; --hair:#E5E3DA;
     --ir1:#4FE0C0; --ir2:#7B9BFF; --ir3:#C77DFF; --ir4:#FF9BC5;
     --grad:linear-gradient(100deg,var(--ir1),var(--ir2) 38%,var(--ir3) 72%,var(--ir4));
-    --pub:#0E8A76; --rev:#B45309; --k0:#0E8A76; --k1:#C7519E;
+    --pub:#0A7663; --rev:#B45309; --k0:#0A7663; --k1:#C7519E;
+    /* text-safe accent variants: the bright iridescents fail WCAG as text on
+       paper, so anything that is TYPE uses these; borders/dots keep the originals */
+    --ir2t:#3560D2; --ir3t:#8A3FD6;
+    --grad-text:linear-gradient(100deg,#0B8F78,#3560D2 42%,#8A3FD6 74%,#C7519E);
     --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
     --ease:cubic-bezier(.22,.61,.36,1);
     --railw:68px; --pad:clamp(20px,4.5vw,48px);
   }
   html[data-theme="dark"]{
-    --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#69677E; --hair:#262639;
+    --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
     --pub:#2FD4B5; --rev:#F2A65A; --k0:#2FD4B5; --k1:#FF8FC8;
+    --ir2t:#7B9BFF; --ir3t:#C77DFF; --grad-text:var(--grad);
   }
   html[data-theme="dark"] .ls-tip{box-shadow:0 18px 44px -18px rgba(0,0,0,.6);}
   *{box-sizing:border-box;}
@@ -51,7 +56,7 @@
   button{font:inherit; color:inherit;}
   :focus-visible{outline:2px solid var(--ir2); outline-offset:3px; border-radius:4px;}
   .mono{font-family:var(--fm),monospace;}
-  .g-ink{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .g-ink{background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent;}
 
   /* ===== left rail ===== */
   .rail{position:fixed; top:0; bottom:0; left:0; width:var(--railw); z-index:60;
@@ -151,16 +156,24 @@
   .doa-fig .ln{stroke:var(--mut); stroke-width:1.5; fill:none;}
   .doa-fig .dsh{stroke:var(--dim); stroke-dasharray:5 5; fill:none; stroke-width:1;}
 
-  /* Grover demo */
-  .grover{margin-top:44px; background:var(--paper2); border:1px solid var(--hair); border-radius:18px; padding:20px 22px;}
+  /* narrow phones: the interactive panels need more vertical room */
+  @media(max-width:520px){
+    .ls-field{aspect-ratio:1;}
+    .quad{font-size:.52rem; letter-spacing:.10em;}
+    .axl{font-size:.52rem;}
+    .dotb{width:22px; height:22px;}
+    .ls-tip{max-width:200px;}
+    .hq-grid{gap:3px;}
+    .hq-eqs{min-height:auto;}
+    .dd-plot{height:130px;}
+    .q-btn{padding:8px 13px;}
+  }
+
+  /* shared selector rows (qubit / N pickers) */
   .g-n{display:flex; gap:6px; flex-wrap:wrap;}
   .nbtn{padding:6px 12px; font-size:.7rem;}
   .nbtn.on{border-color:var(--ir2); color:var(--ink);}
-  .g-bars{display:flex; align-items:flex-end; gap:2px; height:150px; margin:14px 0 10px;}
-  .gbar{flex:1; min-height:3px; background:color-mix(in srgb,var(--ir2) 60%,transparent); border-radius:3px 3px 0 0; transition:height .25s var(--ease);}
-  @media (prefers-reduced-motion: reduce){.gbar{transition:none;}}
-  .gbar.hit{background:var(--k0);}
-  .gbar.miss{background:var(--k1);}
+
   /* HQ-DOA pipeline */
   .hq{margin-top:20px; background:var(--paper2); border:1px solid var(--hair); border-radius:18px; padding:20px 22px;}
   .hq-steps{list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:16px 0 4px; padding:0;}
@@ -226,7 +239,7 @@
   /* about */
   .sig-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:start;}
   .sig-grid .lead{font-family:var(--fd); font-weight:600; font-size:clamp(1.25rem,2.4vw,1.6rem); line-height:1.35; letter-spacing:-.01em; margin:0;}
-  .sig-grid .lead em{font-style:normal; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .sig-grid .lead em{font-style:normal; background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .sig-grid p{color:var(--mut); margin:0 0 16px;}
   .sig-grid p b{color:var(--ink); font-weight:600;}
   @media(max-width:820px){.sig-grid{grid-template-columns:1fr; gap:24px;}}
@@ -265,7 +278,7 @@
   .ax.v{top:6%; bottom:6%; left:50%; width:1px;}
   .quad{position:absolute; font-family:var(--fm); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--dim);}
   .quad.tl{top:12px; left:14px;} .quad.tr{top:12px; right:14px; text-align:right;}
-  .quad.bl{bottom:12px; left:14px;} .quad.br{bottom:12px; right:14px; text-align:right; color:var(--ir3);}
+  .quad.bl{bottom:12px; left:14px;} .quad.br{bottom:12px; right:14px; text-align:right; color:var(--ir3t);}
   .axl{position:absolute; font-family:var(--fm); font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mut);}
   .axl.x{right:4%; top:calc(50% + 8px);}
   .axl.y{left:calc(50% + 8px); top:6%; writing-mode:vertical-rl;}
@@ -292,7 +305,7 @@
   .paper .venue{font-family:var(--fm); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); margin:0 0 8px;}
   .paper h3{font-family:var(--fd); font-weight:700; font-size:clamp(1.2rem,2.4vw,1.6rem); letter-spacing:-.015em; margin:0 0 6px;}
   .paper .auth{font-size:.9rem; color:var(--mut); margin:0;}
-  .paper .first{font-family:var(--fm); font-size:.72rem; color:var(--ir3); margin:8px 0 0;}
+  .paper .first{font-family:var(--fm); font-size:.72rem; color:var(--ir3t); margin:8px 0 0;}
   .pr{display:flex; flex-direction:column; align-items:flex-end; gap:12px; justify-content:center;}
   .st{font-family:var(--fm); font-size:.64rem; letter-spacing:.12em; text-transform:uppercase; padding:5px 12px; border-radius:999px; border:1px solid;}
   .st.pub{color:var(--pub); border-color:color-mix(in srgb,var(--pub) 45%,transparent); background:color-mix(in srgb,var(--pub) 8%,transparent);}
@@ -399,7 +412,7 @@
     /* Interactive pieces render as empty boxes on paper — drop them and their
        headings, rather than printing a title over a blank rectangle. */
     .rail,.mtop,.skip,#ent,#field,.grid-lines,.toast,.cta,.q-act,.g-act,.swx,
-    .qubit,.grover,#hqd,#doad,#map,#bridge,.ls-field,.legend,.obs,
+    .qubit,#hqd,#doad,#map,#bridge,.ls-field,.legend,.obs,
     .pub-links,.arch-cap{display:none !important;}
     html,body{background:#fff !important; color:#000 !important; font-size:10pt; line-height:1.45;}
     .page{margin-left:0;}
@@ -624,7 +637,7 @@
         <div>
           <p class="venue">IEEE Transactions on Instrumentation &amp; Measurement · 2026</p>
           <h3>Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in NISQ Devices</h3>
-          <p class="auth">P. P. Patil · J. Tembhurne · S. J. Choudhury &nbsp;·&nbsp; <span class="mono" style="color:var(--ir3)">HQ-DOA</span></p>
+          <p class="auth">P. P. Patil · J. Tembhurne · S. J. Choudhury &nbsp;·&nbsp; <span class="mono" style="color:var(--ir3t)">HQ-DOA</span></p>
           <p class="auth" style="margin-top:8px">Integrates Simon&rsquo;s period detection with Grover&rsquo;s amplitude amplification through dynamic oracle adaptation. Eliminates mid-circuit state collapse by synthesizing measurement oracles from period-detection results &mdash; lifting measurement success from <b style="color:var(--ink)">15% to 60% on the IBM Brisbane processor</b>, at query complexity O((2<sup>n&minus;1</sup>/k)<sup>&frac12;</sup>).</p>
           <p class="first">First quantum-computing publication from IIIT Nagpur</p>
         </div>
@@ -683,26 +696,7 @@
         <p class="q-cap">Each Simon query returns one linear constraint on the hidden period <b>s</b>. Once n&minus;1 independent constraints pin it down, DOA rebuilds the oracle around that structure &mdash; and because f(x) = f(x&oplus;s), every state pairs with a partner and <b>the search space folds in half</b>. Grover then runs over what's left, reaching the target in fewer queries than a blind search. <span style="color:var(--dim)">Schematic illustration of the pipeline; the quantum steps are simulated classically, not a reproduction of the paper's hardware results.</span></p>
       </div>
 
-      <div class="grover reveal" id="grover">
-        <div class="q-head">
-          <span class="q-lab">Why oracles matter · Grover in 60 seconds</span>
-          <span class="g-n" role="group" aria-label="Search space size">
-            <button class="q-btn nbtn" data-gn="8">8</button>
-            <button class="q-btn nbtn on" data-gn="16">16</button>
-            <button class="q-btn nbtn" data-gn="32">32</button>
-            <button class="q-btn nbtn" data-gn="64">64</button>
-          </span>
-        </div>
-        <div class="g-bars" id="gbars" aria-hidden="true"></div>
-        <p class="q-read" id="gread"></p>
-        <div class="q-act">
-          <button class="q-btn solid" id="gstep">Step</button>
-          <button class="q-btn" id="grun">Run</button>
-          <button class="q-btn" id="gmeasure">Measure</button>
-          <button class="q-btn" id="greset">Reset</button>
-        </div>
-        <p class="q-cap">One state is secretly marked. Each query, the oracle flips its phase and diffusion amplifies it — watch probability concentrate in ~&radic;N queries, then <b>Measure</b>. That's the textbook <em>fixed</em> oracle; <b>DOA asks what changes when the oracle itself can adapt.</b></p>
-      </div>
+      
       <div class="dd reveal" id="doad">
         <div class="q-head">
           <span class="q-lab">Fixed vs adaptive oracle &middot; same target, same start</span>
@@ -890,7 +884,7 @@
 
   <footer>
     <div class="wrap fin">
-      <span>Nagpur · Maharashtra · India &nbsp;·&nbsp; <a href="architect.html" style="color:var(--ir2)">Architecture work →</a></span>
+      <span>Nagpur · Maharashtra · India &nbsp;·&nbsp; <a href="architect.html" style="color:var(--ir2t)">Architecture work →</a></span>
       <span class="obs" id="obs" hidden title="Each visit collapses this page's state — visitor count via GoatCounter"><i></i><span class="ket">|&psi;&#10217;</span> observed <b id="obsn">—</b> times</span>
       <span>Interference — built from scratch · GitHub Pages · your cursor is entangled</span>
     </div>
@@ -1114,77 +1108,6 @@
     })();
   })();
 
-  /* ---------- Grover demo ---------- */
-  (function(){
-    var barsEl=document.getElementById("gbars"); if(!barsEl) return;
-    var read=document.getElementById("gread");
-    var bStep=document.getElementById("gstep"), bRun=document.getElementById("grun"),
-        bMeas=document.getElementById("gmeasure"), bReset=document.getElementById("greset");
-    var N=16, amps=null, marked=0, queries=0, timer=null, done=false, bars=[];
-    function optimal(){return Math.max(1, Math.floor(Math.PI/4*Math.sqrt(N)));}
-    function build(){
-      barsEl.innerHTML=""; bars=[];
-      for(var i=0;i<N;i++){var d=document.createElement("i");d.className="gbar";barsEl.appendChild(d);bars.push(d);}
-    }
-    function render(){
-      var maxp=0,i,p;
-      for(i=0;i<N;i++){p=amps[i]*amps[i]; if(p>maxp)maxp=p;}
-      for(i=0;i<N;i++){
-        p=amps[i]*amps[i];
-        bars[i].style.height=Math.max(3,(p/(maxp||1))*100)+"%";
-        if(!done) bars[i].className="gbar";
-      }
-      var pm=Math.round(amps[marked]*amps[marked]*100);
-      read.textContent="queries "+queries+" / ~"+optimal()+" optimal \u00B7 P(marked) "+pm+"%";
-    }
-    function init(){
-      if(timer){clearInterval(timer);timer=null;}
-      if(bRun)bRun.textContent="Run";
-      amps=new Array(N); var a=1/Math.sqrt(N);
-      for(var i=0;i<N;i++)amps[i]=a;
-      marked=Math.floor(Math.random()*N); queries=0; done=false;
-      build(); render();
-    }
-    function step(){
-      if(done)return;
-      amps[marked]*=-1;
-      var m=0,i; for(i=0;i<N;i++)m+=amps[i]; m/=N;
-      for(i=0;i<N;i++)amps[i]=2*m-amps[i];
-      queries++; render();
-    }
-    function runToggle(){
-      if(done)return;
-      if(timer){clearInterval(timer);timer=null;bRun.textContent="Run";return;}
-      bRun.textContent="Pause";
-      timer=setInterval(function(){
-        step();
-        if(queries>=optimal()){clearInterval(timer);timer=null;bRun.textContent="Run";}
-      },300);
-    }
-    function measure(){
-      if(done)return;
-      if(timer){clearInterval(timer);timer=null;bRun.textContent="Run";}
-      var r=Math.random(), c=0, pick=N-1, i;
-      for(i=0;i<N;i++){c+=amps[i]*amps[i]; if(r<=c){pick=i;break;}}
-      done=true;
-      for(i=0;i<N;i++)bars[i].className="gbar"+(i===marked?" hit":(i===pick?" miss":""));
-      var ok=(pick===marked);
-      read.textContent="measured |"+pick+"\u27E9 \u2014 "+(ok?"correct":"missed (marked was |"+marked+"\u27E9)")+" after "+queries+" oracle calls \u00B7 classical avg \u2248 "+Math.round(N/2);
-    }
-    document.querySelectorAll("[data-gn]").forEach(function(b){
-      b.addEventListener("click",function(){
-        N=parseInt(b.getAttribute("data-gn"),10);
-        document.querySelectorAll("[data-gn]").forEach(function(x){x.classList.toggle("on",x===b);});
-        init();
-      });
-    });
-    bStep.addEventListener("click",step);
-    if(reduce){bRun.style.display="none";} else {bRun.addEventListener("click",runToggle);}
-    bMeas.addEventListener("click",measure);
-    bReset.addEventListener("click",init);
-    init();
-  })();
-
   /* ---------- DOA: fixed vs adaptive oracle ---------- */
   (function(){
     var host=document.getElementById("doad"); if(!host) return;
@@ -1235,7 +1158,7 @@
       var W=r.width, H=r.height, pad=6, n=Math.max(hF.length,2);
       var cs=getComputedStyle(document.documentElement);
       var hair=cs.getPropertyValue("--hair").trim()||"#E5E3DA";
-      var dim=cs.getPropertyValue("--dim").trim()||"#9C9CAB";
+      var dim=cs.getPropertyValue("--dim").trim()||"#6A6A78";
       ctx.clearRect(0,0,W,H);
       ctx.strokeStyle=hair; ctx.lineWidth=1;
       [0,.5,1].forEach(function(f){
@@ -1256,7 +1179,7 @@
         var lx=(arr.length===1)?0:((arr.length-1)/(n-1))*W, ly=pad+(1-arr[arr.length-1])*(H-2*pad);
         ctx.fillStyle=col; ctx.beginPath(); ctx.arc(lx,ly,3,0,6.2832); ctx.fill();
       }
-      line(hF,"#C7519E"); line(hA,"#0E8A76");
+      line(hF,"#C7519E"); line(hA,"#0A7663");
     }
     function render(){
       paint(barsF,fx); paint(barsA,ad);

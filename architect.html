@@ -147,6 +147,14 @@
   .note{font-size:.78rem; color:var(--dim); line-height:1.6; border-top:1px solid var(--rule); padding-top:13px; margin:0;}
   .note b{color:var(--mute); font-weight:600;}
 
+  /* narrow phones: give the six services room and drop the sub-label */
+  @media(max-width:520px){
+    .stage{aspect-ratio:1;}
+    .svc{font-size:.62rem; padding:6px 8px;}
+    .svc small{display:none;}
+    .stage-lab{font-size:.58rem;}
+  }
+
   /* ---- pipeline ---- */
   .pipe-steps{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px;}
   .pstep{font-family:var(--fm); font-size:.7rem; padding:7px 12px; border-radius:7px; border:1px solid var(--rule);
