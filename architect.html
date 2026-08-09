@@ -293,6 +293,22 @@
     color:#13131B; border:1px solid #13131B; background:#FFFFFF; padding:9px 16px; white-space:nowrap;}
 
   /* ---- contact ---- */
+  /* ---- intent-routed contact (drawing schedule) ---- */
+  .intents{display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--ink); margin:0 0 20px;}
+  @media(max-width:760px){.intents{grid-template-columns:1fr;}}
+  .intent{padding:15px 16px; border-right:1px solid var(--rule); transition:.2s var(--e); display:block;}
+  .intent:last-child{border-right:0;}
+  @media(max-width:760px){.intent{border-right:0; border-bottom:1px solid var(--rule);} .intent:last-child{border-bottom:0;}}
+  .intent:hover{background:var(--slab);}
+  .intent b{display:block; font-family:var(--fd); font-weight:700; font-size:1.02rem; letter-spacing:.03em;
+    text-transform:uppercase; margin-bottom:4px;}
+  .intent span{font-family:var(--fm); font-size:.63rem; letter-spacing:.06em; color:var(--dim); display:block;}
+  .intent.primary{background:var(--mesh);} 
+  .intent.primary b{color:var(--on);} 
+  .intent.primary span{color:var(--on); opacity:.85;}
+  .intent.primary:hover{background:var(--ink);} 
+  .intent.primary:hover b,.intent.primary:hover span{color:var(--paper);}
+
   .contact{padding:60px 0;}
   .contact h2{font-family:var(--fd); font-weight:700; font-size:clamp(1.8rem,4.6vw,3rem); letter-spacing:.02em;
     text-transform:uppercase; margin:0 0 12px;}
@@ -322,7 +338,7 @@
   /* ---- print: fall back to a clean CV ---- */
   @media print{
     @page{ margin:14mm; }
-    .bar,.skip,.tgl,.swx,.regmark,#decompose,#pipeline,#research,.hits,.row,.links,footer{display:none !important;}
+    .bar,.skip,.tgl,.swx,.regmark,#decompose,#pipeline,#research,.hits,.row,.links,.intents,footer{display:none !important;}
     html,body{background:#fff !important; color:#000 !important; font-size:10.5pt;}
     body::before{display:none !important;}
     .wrap{max-width:none; padding-inline:0;}
@@ -373,7 +389,7 @@
       <a href="#cases">Case files</a>
       <a href="#contact">Contact</a>
       <span class="swx" role="group" aria-label="Site sections">
-        <a href="./">Research</a>
+        <a href="./" data-track="/cta/to-research">Research</a>
         <a href="architect.html" aria-current="page">Architecture</a>
       </span>
       <button class="tgl" id="tgl" aria-label="Switch between dark and light theme" title="Switch theme">
@@ -408,7 +424,7 @@
 
     <div class="row">
       <a class="btn go" href="#decompose">See how I decompose a monolith</a>
-      <a class="btn" href="architect.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+      <a class="btn" href="architect.pdf" target="_blank" rel="noopener" data-track="/cta/architect-resume-hero">Résumé (PDF)</a>
       <a class="btn" href="https://www.linkedin.com/in/prasad-p-patil" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
@@ -767,11 +783,19 @@ PROCEDURE DIVISION.
   <div class="wrap">
     <h2>Got an estate nobody wants to touch?</h2>
     <p>Architecture reviews, modernization strategy, and the awkward question of whether you should split that service at all.</p>
+    <div class="intents">
+      <a class="intent primary" href="mailto:prasadpatil252@gmail.com?subject=Architecture%20engagement" data-track="/intent/architect-engagement">
+        <b>Hiring or an engagement</b><span>a role, a contract, a statement of work</span></a>
+      <a class="intent" href="mailto:prasadpatil252@gmail.com?subject=Architecture%20review" data-track="/intent/architect-review">
+        <b>Architecture review</b><span>a second opinion on a design or migration</span></a>
+      <a class="intent" href="mailto:prasadpatil252@gmail.com?subject=Research%20collaboration" data-track="/intent/architect-research">
+        <b>Research collaboration</b><span>quantum computing, ML, or a paper</span></a>
+    </div>
     <div class="links">
-      <a class="btn go" href="mailto:prasadpatil252@gmail.com">prasadpatil252@gmail.com</a>
+      <a class="btn" href="mailto:prasadpatil252@gmail.com" data-track="/intent/architect-plain">prasadpatil252@gmail.com</a>
       <a class="btn" href="https://www.linkedin.com/in/prasad-p-patil" target="_blank" rel="noopener">LinkedIn</a>
       <a class="btn" href="https://github.com/prasadpatil25" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="architect.pdf" target="_blank" rel="noopener">Résumé</a>
+      <a class="btn" href="architect.pdf" target="_blank" rel="noopener" data-track="/cta/architect-resume">Résumé</a>
     </div>
   </div>
 </section>
@@ -1022,6 +1046,16 @@ PROCEDURE DIVISION.
       }
     },100);
   })();
+
+  /* ---------- CTA events (GoatCounter) ---------- */
+  document.querySelectorAll("[data-track]").forEach(function(el){
+    el.addEventListener("click",function(){
+      try{
+        if(window.goatcounter && window.goatcounter.count)
+          window.goatcounter.count({path:el.getAttribute("data-track"), title:el.getAttribute("data-track"), event:true});
+      }catch(e){}
+    });
+  });
 
   /* ---------- trace spans ---------- */
   document.querySelectorAll(".span-btn").forEach(function(b){

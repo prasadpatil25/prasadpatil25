@@ -351,6 +351,17 @@
   .rc li span{font-family:var(--fm); font-size:.72rem; color:var(--dim);}
 
   /* contact */
+  /* intent-routed contact */
+  .intents{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:0 auto 26px; max-width:760px; text-align:left;}
+  @media(max-width:700px){.intents{grid-template-columns:1fr;}}
+  .intent{display:block; background:var(--paper2); border:1px solid var(--hair); border-radius:12px;
+    padding:15px 16px; transition:.24s var(--ease);}
+  .intent:hover{transform:translateY(-2px); border-color:var(--ir2); box-shadow:0 14px 32px -18px var(--glow);}
+  .intent b{display:block; font-family:var(--fd); font-weight:600; font-size:.98rem; letter-spacing:-.01em; margin-bottom:4px;}
+  .intent span{font-family:var(--fm); font-size:.66rem; color:var(--dim); display:block; line-height:1.5;}
+  .intent.primary{border-color:transparent; background:var(--ink);}
+  .intent.primary b{color:var(--paper);} .intent.primary span{color:var(--paper); opacity:.7;}
+
   .contact{padding:120px 0 110px; text-align:center;}
   .contact h2{font-family:var(--fd); font-weight:800; font-size:clamp(2.2rem,6vw,4.2rem); letter-spacing:-.028em; margin:0 0 18px;}
   .contact p{color:var(--mut); max-width:46ch; margin:0 auto 34px;}
@@ -412,7 +423,7 @@
     /* Interactive pieces render as empty boxes on paper — drop them and their
        headings, rather than printing a title over a blank rectangle. */
     .rail,.mtop,.skip,#ent,#field,.grid-lines,.toast,.cta,.q-act,.g-act,.swx,
-    .qubit,#hqd,#doad,#map,#bridge,.ls-field,.legend,.obs,
+    .qubit,#hqd,#doad,#map,#bridge,.ls-field,.legend,.obs,.intents,
     .pub-links,.arch-cap{display:none !important;}
     html,body{background:#fff !important; color:#000 !important; font-size:10pt; line-height:1.45;}
     .page{margin-left:0;}
@@ -470,7 +481,7 @@
   <div class="in">
     <span class="name"><i></i>Prasad Patil</span>
     <a class="lnk" href="#signal">Signal</a><a class="lnk" href="#map">Map</a><a class="lnk" href="#research">Research</a>
-    <a class="lnk" href="#path">Path</a><a class="lnk" href="#code">Code</a><a class="lnk" href="#contact">Contact</a><span class="swx" role="group" aria-label="Site sections" style="margin-left:6px"><a href="./" aria-current="page">Research</a><a href="architect.html">Architecture</a></span>
+    <a class="lnk" href="#path">Path</a><a class="lnk" href="#code">Code</a><a class="lnk" href="#contact">Contact</a><span class="swx" role="group" aria-label="Site sections" style="margin-left:6px"><a href="./" aria-current="page">Research</a><a href="architect.html" data-track="/cta/to-architecture">Architecture</a></span>
     <button class="kbtn" id="kmob" aria-label="Toggle light and dark theme" style="margin-left:auto">|1⟩</button>
   </div>
 </div>
@@ -478,7 +489,7 @@
 <main class="page" id="top"><span id="top-anchor"></span>
   <div class="wrap mast">
     <span class="who">Prasad Patil</span>
-    <span class="meta"><i></i>Open to collaboration · Nagpur, IN · IST &nbsp;&nbsp;<span class="swx" role="group" aria-label="Site sections"><a href="./" aria-current="page">Research</a><a href="architect.html">Architecture</a></span></span>
+    <span class="meta"><i></i>Open to collaboration · Nagpur, IN · IST &nbsp;&nbsp;<span class="swx" role="group" aria-label="Site sections"><a href="./" aria-current="page">Research</a><a href="architect.html" data-track="/cta/to-architecture">Architecture</a></span></span>
   </div>
 
   <header class="hero">
@@ -494,7 +505,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
           <a class="pill" href="https://github.com/prasadpatil25" target="_blank" rel="noopener">GitHub
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg></a>
-          <a class="pill" href="researcher.pdf" target="_blank" rel="noopener">Résumé
+          <a class="pill" href="researcher.pdf" target="_blank" rel="noopener" data-track="/cta/research-resume">Résumé
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v12M8 11l4 4 4-4M5 21h14"/></svg></a>
         </div>
       </div>
@@ -872,8 +883,16 @@
     <div class="wrap">
       <h2 class="reveal">Let's build the <span class="g-ink">improbable.</span></h2>
       <p class="reveal">Research collaboration, quantum-computing conversations, and architecture problems worth solving.</p>
+      <div class="intents reveal">
+        <a class="intent primary" href="mailto:prasadpatil252@gmail.com?subject=Research%20collaboration" data-track="/intent/research-collab">
+          <b>Research collaboration</b><span>quantum computing, DOA, or a joint paper</span></a>
+        <a class="intent" href="mailto:prasadpatil252@gmail.com?subject=Speaking%20or%20review" data-track="/intent/research-speaking">
+          <b>Speaking or reviewing</b><span>a talk, a seminar, or peer review</span></a>
+        <a class="intent" href="mailto:prasadpatil252@gmail.com?subject=Architecture%20engagement" data-track="/intent/research-architecture">
+          <b>Architecture work</b><span>cloud, modernization, microservices</span></a>
+      </div>
       <div class="clinks reveal">
-        <a href="mailto:prasadpatil252@gmail.com">Email</a><span class="sep">·</span>
+        <a href="mailto:prasadpatil252@gmail.com" data-track="/intent/research-plain">Email</a><span class="sep">·</span>
         <a href="https://www.linkedin.com/in/prasad-p-patil" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
         <a href="https://github.com/prasadpatil25" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
         <a href="https://scholar.google.com/citations?user=FCPJAYgAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a><span class="sep">·</span>
@@ -1359,6 +1378,16 @@
     }
     reset();
   })();
+
+  /* ---------- CTA events (GoatCounter) ---------- */
+  document.querySelectorAll("[data-track]").forEach(function(el){
+    el.addEventListener("click",function(){
+      try{
+        if(window.goatcounter && window.goatcounter.count)
+          window.goatcounter.count({path:el.getAttribute("data-track"), title:el.getAttribute("data-track"), event:true});
+      }catch(e){}
+    });
+  });
 
   /* ---------- observation count (GoatCounter) ---------- */
   (function(){
