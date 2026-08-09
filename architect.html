@@ -112,7 +112,17 @@
   .tgl svg{width:14px; height:14px;}
   .tgl .sun{display:none;} html[data-theme="light"] .tgl .sun{display:block;}
   html[data-theme="light"] .tgl .moon{display:none;}
-  @media(max-width:900px){ .bar nav a:not(.alt){display:none;} }
+  /* mobile: the bar scrolls horizontally instead of hiding its links
+     (the old rule keyed off an .alt class that no longer exists, which
+      hid every nav link AND both switcher links) */
+  @media(max-width:900px){
+    .bar-in{gap:14px; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none;}
+    .bar-in::-webkit-scrollbar{display:none;}
+    .brand{flex:none; font-size:1.02rem;}
+    .bar nav{gap:15px; flex:none;}
+    .bar nav a{white-space:nowrap;}
+    .swx{flex:none;} .tgl{flex:none;}
+  }
 
   /* ---- title block ---- */
   .titleblock{display:grid; grid-template-columns:repeat(5,1fr); border:1px solid var(--ink); margin:22px 0 30px;}
