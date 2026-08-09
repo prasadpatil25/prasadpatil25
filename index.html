@@ -461,7 +461,7 @@
     a{color:#000 !important; text-decoration:none;}
     footer{padding:8px 0;}
   }
-  #ent{position:fixed; inset:0; z-index:55; pointer-events:none;}
+  #ent{position:fixed; inset:0; z-index:0; pointer-events:none;}
 </style>
 </head>
 <body>
@@ -491,6 +491,7 @@
   </div>
 </div>
 
+<canvas id="ent" aria-hidden="true"></canvas>
 <main class="page" id="top"><span id="top-anchor"></span>
   <div class="mastbar" id="mastbar">
   <div class="wrap mast">
@@ -917,7 +918,6 @@
   </footer>
 </main>
 
-<canvas id="ent" aria-hidden="true"></canvas>
 <div class="toast" id="toast" role="status">Copied</div>
 
 <script>
@@ -1111,29 +1111,32 @@
     });
   })();
 
-  /* ---------- entangled cursor twin ---------- */
+  /* ---------- entangled twin ----------
+     No tether is drawn between the partners: entanglement carries no signal
+     from one to the other, so a connecting line would picture the one thing
+     it does not do. Only the anticorrelated motion is shown. */
   (function(){
     var ent=document.getElementById("ent");
-    if(!ent || !window.matchMedia("(pointer:fine)").matches || reduce) { if(ent) ent.remove(); return; }
-    var ectx=ent.getContext("2d"), eW=0,eH=0, px=-1,py=-1, active=false;
-    function esize(){eW=innerWidth;eH=innerHeight;ent.width=eW;ent.height=eH;}
-    esize(); addEventListener("resize",esize);
-    addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;active=true;},{passive:true});
-    document.addEventListener("pointerleave",function(){active=false;});
-    (function eloop(){
-      ectx.clearRect(0,0,eW,eH);
-      if(active&&px>=0){
-        var tx=eW-px, ty=eH-py;
-        var g=ectx.createLinearGradient(px,py,tx,ty);
-        g.addColorStop(0,"rgba(79,224,192,.4)"); g.addColorStop(.5,"rgba(123,155,255,.12)"); g.addColorStop(1,"rgba(255,155,197,.4)");
-        ectx.strokeStyle=g; ectx.lineWidth=1;
-        ectx.beginPath(); ectx.moveTo(px,py); ectx.lineTo(tx,ty); ectx.stroke();
-        ectx.fillStyle="rgba(79,224,192,.9)"; ectx.beginPath(); ectx.arc(px,py,2.6,0,6.2832); ectx.fill();
-        ectx.fillStyle="rgba(255,155,197,.95)"; ectx.beginPath(); ectx.arc(tx,ty,3.6,0,6.2832); ectx.fill();
-        ectx.fillStyle="rgba(255,155,197,.16)"; ectx.beginPath(); ectx.arc(tx,ty,10,0,6.2832); ectx.fill();
+    if(!ent || !window.matchMedia("(pointer:fine)").matches || reduce){ if(ent) ent.remove(); return; }
+    var ctx=ent.getContext("2d"), W=0,H=0, px=-1,py=-1, alpha=0, lastMove=-1e9;
+    function size(){ W=innerWidth; H=innerHeight; ent.width=W; ent.height=H; }
+    size(); addEventListener("resize",size);
+    addEventListener("pointermove",function(e){ px=e.clientX; py=e.clientY; lastMove=performance.now(); },{passive:true});
+    document.addEventListener("pointerleave",function(){ lastMove=-1e9; });
+    (function loop(t){
+      /* settle out while the visitor is reading, return when they move */
+      var idle=(t-lastMove)>2200;
+      alpha += ((idle||px<0 ? 0 : 1) - alpha) * 0.06;
+      ctx.clearRect(0,0,W,H);
+      if(alpha>0.01 && px>=0){
+        var tx=W-px, ty=H-py;
+        ctx.fillStyle="rgba(255,155,197,"+(0.14*alpha)+")";
+        ctx.beginPath(); ctx.arc(tx,ty,11,0,6.2832); ctx.fill();
+        ctx.fillStyle="rgba(255,155,197,"+(0.85*alpha)+")";
+        ctx.beginPath(); ctx.arc(tx,ty,3.4,0,6.2832); ctx.fill();
       }
-      requestAnimationFrame(eloop);
-    })();
+      requestAnimationFrame(loop);
+    })(performance.now());
   })();
 
   /* ---------- DOA: fixed vs adaptive oracle ---------- */
