@@ -79,6 +79,8 @@
   .skip:focus{top:14px;}
 
   /* registration marks, as on a real plotted sheet */
+  /* the sheet draws itself: plotter laying down construction geometry */
+  #sheet{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;}
   .regmark{position:fixed; width:15px; height:15px; z-index:2; pointer-events:none; opacity:.7;}
   .regmark::before,.regmark::after{content:""; position:absolute; background:var(--mute);}
   .regmark::before{left:0; right:0; top:7px; height:1px;}
@@ -338,7 +340,7 @@
   /* ---- print: fall back to a clean CV ---- */
   @media print{
     @page{ margin:14mm; }
-    .bar,.skip,.tgl,.swx,.regmark,#decompose,#pipeline,#research,.hits,.row,.links,.intents,footer{display:none !important;}
+    .bar,.skip,.tgl,.swx,.regmark,#sheet,#decompose,#pipeline,#research,.hits,.row,.links,.intents,footer{display:none !important;}
     html,body{background:#fff !important; color:#000 !important; font-size:10.5pt;}
     body::before{display:none !important;}
     .wrap{max-width:none; padding-inline:0;}
@@ -376,6 +378,7 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<canvas id="sheet" aria-hidden="true"></canvas>
 <span class="regmark rm-tl" aria-hidden="true"></span><span class="regmark rm-tr" aria-hidden="true"></span>
 <span class="regmark rm-bl" aria-hidden="true"></span><span class="regmark rm-br" aria-hidden="true"></span>
 
@@ -1045,6 +1048,123 @@ PROCEDURE DIVISION.
         tryList(candidates(path));
       }
     },100);
+  })();
+
+  /* ---------- plotter: construction geometry drawing itself ---------- */
+  (function(){
+    var cv=document.getElementById("sheet"); if(!cv) return;
+    var ctx=cv.getContext("2d"), W=0,H=0,dpr=Math.min(devicePixelRatio||1,2);
+    var G=80;                       /* matches the heavy drafting grid */
+    var items=[], last=0, px=null, py=null;
+
+    var palCache={t:null};
+    function rgbOf(n){
+      var v=getComputedStyle(document.documentElement).getPropertyValue(n).trim().replace("#","");
+      if(v.length===3) v=v[0]+v[0]+v[1]+v[1]+v[2]+v[2];
+      var x=parseInt(v,16); return [(x>>16)&255,(x>>8)&255,x&255];
+    }
+    function pal(){
+      var t=document.documentElement.getAttribute("data-theme");
+      if(t!==palCache.t) palCache={t:t, rule:rgbOf("--rule"), wire:rgbOf("--wire"),
+                                   mesh:rgbOf("--mesh"), leg:rgbOf("--legacy")};
+      return palCache;
+    }
+    function rgba(c,a){return "rgba("+c[0]+","+c[1]+","+c[2]+","+a+")";}
+    function pick(){
+      var r=Math.random(), p=pal();
+      if(r<0.70) return {c:p.rule, w:0.85};
+      if(r<0.88) return {c:p.wire, w:0.40};
+      if(r<0.95) return {c:p.mesh, w:0.38};
+      return {c:p.leg, w:0.34};
+    }
+    function resize(){
+      W=innerWidth; H=innerHeight;
+      cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function spawn(t){
+      var near=(px!==null && Math.random()<0.55);
+      var ox=near?px:Math.random()*W, oy=near?py:Math.random()*H;
+      var sx=Math.round(ox/G)*G, sy=Math.round(oy/G)*G;
+      var k=Math.random(), col=pick();
+      if(k<0.62){
+        var horiz=Math.random()<0.5, dir=Math.random()<0.5?1:-1;
+        var len=G*(2+Math.floor(Math.random()*6));
+        items.push({type:"line", x1:sx, y1:sy,
+          x2:horiz?sx+len*dir:sx, y2:horiz?sy:sy+len*dir,
+          born:t, draw:700+Math.random()*500, hold:1700+Math.random()*1500, fade:1400,
+          col:col, tick:Math.random()<0.45});
+      } else if(k<0.87){
+        var r=G*(1+Math.floor(Math.random()*3));
+        var a0=Math.random()*6.2832, sw=(0.5+Math.random()*1.2)*(Math.random()<0.5?1:-1);
+        items.push({type:"arc", cx:sx, cy:sy, r:r, a0:a0, a1:a0+sw,
+          born:t, draw:900+Math.random()*600, hold:1500+Math.random()*1200, fade:1400, col:col});
+      } else {
+        items.push({type:"node", x:sx, y:sy, born:t,
+          draw:380, hold:1900, fade:1200, col:col});
+      }
+      if(items.length>16) items.shift();
+    }
+    function phase(it,t){
+      var e=t-it.born;
+      if(e<it.draw) return {p:e/it.draw, a:1};
+      if(e<it.draw+it.hold) return {p:1, a:1};
+      var f=(e-it.draw-it.hold)/it.fade;
+      return f<1 ? {p:1, a:1-f} : null;
+    }
+    function frame(t){
+      ctx.clearRect(0,0,W,H);
+      for(var i=items.length-1;i>=0;i--){
+        var it=items[i], ph=phase(it,t);
+        if(!ph){ items.splice(i,1); continue; }
+        var a=ph.a*it.col.w*0.55, p=ph.p;
+        ctx.strokeStyle=rgba(it.col.c,a); ctx.lineWidth=1;
+        if(it.type==="line"){
+          var ex=it.x1+(it.x2-it.x1)*p, ey=it.y1+(it.y2-it.y1)*p;
+          ctx.beginPath(); ctx.moveTo(it.x1,it.y1); ctx.lineTo(ex,ey); ctx.stroke();
+          if(p<1){ ctx.fillStyle=rgba(it.col.c,a*1.6);
+            ctx.beginPath(); ctx.arc(ex,ey,1.7,0,6.2832); ctx.fill(); }
+          else if(it.tick){                       /* dimension ticks once drawn */
+            var hz=(it.y1===it.y2);
+            [[it.x1,it.y1],[it.x2,it.y2]].forEach(function(pt){
+              ctx.beginPath();
+              if(hz){ ctx.moveTo(pt[0],pt[1]-4); ctx.lineTo(pt[0],pt[1]+4); }
+              else  { ctx.moveTo(pt[0]-4,pt[1]); ctx.lineTo(pt[0]+4,pt[1]); }
+              ctx.stroke();
+            });
+          }
+        } else if(it.type==="arc"){
+          ctx.beginPath(); ctx.arc(it.cx,it.cy,it.r,it.a0,it.a0+(it.a1-it.a0)*p); ctx.stroke();
+          if(p<1){
+            var ang=it.a0+(it.a1-it.a0)*p;
+            ctx.fillStyle=rgba(it.col.c,a*1.6);
+            ctx.beginPath(); ctx.arc(it.cx+Math.cos(ang)*it.r, it.cy+Math.sin(ang)*it.r, 1.7,0,6.2832); ctx.fill();
+          }
+        } else {
+          var s=5*p;
+          ctx.beginPath();
+          ctx.moveTo(it.x-s,it.y); ctx.lineTo(it.x+s,it.y);
+          ctx.moveTo(it.x,it.y-s); ctx.lineTo(it.x,it.y+s);
+          ctx.stroke();
+        }
+      }
+      if(t-last>760){ last=t; spawn(t); }
+      requestAnimationFrame(frame);
+    }
+    resize(); addEventListener("resize",resize);
+    addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;},{passive:true});
+    if(reduce){
+      /* static setting-out: draw one composition, no animation */
+      var t0=0; for(var i=0;i<9;i++) spawn(t0);
+      items.forEach(function(it){ it.draw=1; it.hold=1e9; });
+      ctx.clearRect(0,0,W,H);
+      items.forEach(function(it){
+        var a=it.col.w*0.5; ctx.strokeStyle=rgba(it.col.c,a); ctx.lineWidth=1;
+        if(it.type==="line"){ ctx.beginPath(); ctx.moveTo(it.x1,it.y1); ctx.lineTo(it.x2,it.y2); ctx.stroke(); }
+        else if(it.type==="arc"){ ctx.beginPath(); ctx.arc(it.cx,it.cy,it.r,it.a0,it.a1); ctx.stroke(); }
+        else { ctx.beginPath(); ctx.moveTo(it.x-5,it.y); ctx.lineTo(it.x+5,it.y);
+               ctx.moveTo(it.x,it.y-5); ctx.lineTo(it.x,it.y+5); ctx.stroke(); }
+      });
+    } else requestAnimationFrame(frame);
   })();
 
   /* ---------- CTA events (GoatCounter) ---------- */
