@@ -25,7 +25,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","name":"Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in NISQ Devices","author":[{"@type":"Person","name":"Prasad Prakash Patil"},{"@type":"Person","name":"Jitendra Tembhurne"},{"@type":"Person","name":"Suvra Jyoti Choudhury"}],"isPartOf":{"@type":"Periodical","name":"IEEE Transactions on Instrumentation and Measurement"},"datePublished":"2026","sameAs":"https://doi.org/10.1109/TIM.2026.3659640"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#6A6A78; --hair:#E5E3DA;
@@ -395,29 +395,42 @@
   .swx a:hover{color:var(--ink);}
   .swx a[aria-current="page"]{background:var(--ink); color:var(--paper); font-weight:500;}
 
-  /* bridge: rendered in the DESTINATION site's palette, as a preview */
-  .bridgeA{display:block; background:#0A0C11; border:1px solid #212A36; border-radius:14px;
-    padding:26px 28px; position:relative; overflow:hidden; transition:.28s var(--ease);}
-  .bridgeA:hover{transform:translateY(-2px); box-shadow:0 24px 54px -28px rgba(53,214,176,.55);}
+  /* bridge: rendered in the DESTINATION site's palette, as a preview.
+     The architecture page is a drawing sheet — cyanotype ground, white
+     linework, and the construction convention: dashed = existing to
+     remain, solid = new work. */
+  .bridgeA{display:block; background:#082A45; border:1px solid #17527E; border-radius:0;
+    padding:24px 26px; position:relative; overflow:hidden; transition:.28s var(--ease);}
+  .bridgeA:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 0 #17527E;}
   .bridgeA::after{content:""; position:absolute; inset:0; pointer-events:none;
-    background-image:linear-gradient(rgba(33,42,54,.55) 1px, transparent 1px),linear-gradient(90deg,rgba(33,42,54,.55) 1px,transparent 1px);
-    background-size:38px 38px; opacity:.5;}
+    background-image:
+      linear-gradient(rgba(23,82,126,.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,82,126,.55) 1px, transparent 1px),
+      linear-gradient(rgba(18,63,99,.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18,63,99,.5) 1px, transparent 1px);
+    background-size:56px 56px,56px 56px,14px 14px,14px 14px; opacity:.65;}
   .bA-in{display:flex; gap:22px; align-items:center; flex-wrap:wrap; position:relative; z-index:1;}
-  .bA-lab{font-family:var(--fm); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase; color:#5D6675; margin:0 0 5px;}
-  .bA-in h3{font-family:var(--fd); font-weight:700; font-size:1.3rem; letter-spacing:-.02em; margin:0 0 7px; color:#E8EEF5;}
-  .bA-in h3 s{text-decoration:none; color:#E8944A;} .bA-in h3 u{text-decoration:none; color:#35D6B0;}
-  .bA-in p{margin:0; color:#8A94A3; font-size:.9rem;}
-  .bA-in p b{color:#E8EEF5; font-weight:600;}
-  .bA-go{font-family:var(--fm); font-size:.78rem; color:#04120E; background:#35D6B0;
-    border-radius:999px; padding:10px 18px; white-space:nowrap; transition:.2s var(--ease);}
-  .bridgeA:hover .bA-go{box-shadow:0 12px 28px -14px #35D6B0;}
-  .bA-viz{flex:none; display:flex; align-items:center; gap:11px;}
-  .bA-mono{width:44px; height:44px; border:1.5px dashed #E8944A; border-radius:7px;
+  .bA-lab{font-family:var(--fm); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+    color:#8FB3CE; margin:0 0 6px; display:flex; align-items:center; gap:9px;}
+  .bA-lab em{font-style:normal; border:1px solid #17527E; padding:2px 7px; color:#A6C4DC;}
+  .bA-in h3{font-family:"Barlow Condensed",var(--fd); font-weight:700; font-size:1.6rem;
+    letter-spacing:.03em; text-transform:uppercase; margin:0 0 8px; color:#EAF3FA;}
+  .bA-in h3 s{text-decoration:none; color:#F0A45C;} .bA-in h3 u{text-decoration:none; color:#62E5C2;}
+  .bA-in p{margin:0; color:#A6C4DC; font-size:.88rem;}
+  .bA-in p b{color:#EAF3FA; font-weight:600;}
+  .bA-go{font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    color:#062038; background:#62E5C2; border-radius:0; padding:11px 18px; white-space:nowrap; transition:.2s var(--ease);}
+  .bridgeA:hover .bA-go{background:#EAF3FA;}
+  .bA-viz{flex:none; display:flex; align-items:center; gap:12px;}
+  /* existing to remain: dashed, light */
+  .bA-mono{width:46px; height:46px; border:1.5px dashed #F0A45C; border-radius:0;
     display:grid; grid-template-columns:repeat(2,1fr); gap:3px; padding:6px;}
-  .bA-mono i{background:rgba(232,148,74,.55); border-radius:2px;}
-  .bA-arrow{color:#5D6675; font-family:var(--fm); font-size:.9rem;}
-  .bA-mesh{position:relative; width:52px; height:44px;}
-  .bA-mesh i{position:absolute; width:9px; height:9px; border-radius:2px; background:#35D6B0;}
+  .bA-mono i{background:rgba(240,164,92,.45); border-radius:0;}
+  .bA-arrow{color:#8FB3CE; font-family:var(--fm); font-size:.85rem;}
+  /* new work: solid, bold */
+  .bA-mesh{position:relative; width:54px; height:46px;}
+  .bA-mesh i{position:absolute; width:11px; height:9px; border-radius:0;
+    border:1.5px solid #62E5C2; background:#0C3556;}
   @media(max-width:640px){.bA-viz{display:none;}}
   .skip{position:fixed; top:-60px; left:16px; z-index:100; background:var(--ink); color:var(--paper);
     font-family:var(--fm); font-size:.8rem; padding:10px 16px; border-radius:8px; transition:top .2s var(--ease);}
@@ -877,7 +890,7 @@
             </span>
           </span>
           <div style="flex:1 1 340px">
-            <p class="bA-lab">The other half</p>
+            <p class="bA-lab"><em>A-100</em> The other half</p>
             <h3><s>Monolith</s> &rarr; <u>Mesh</u></h3>
             <p>Fifteen years as a <b>Solution Architect at TCS</b> &mdash; moving legacy enterprise estates to cloud-native architecture. Mainframe and COBOL to Java microservices on Azure, with GenAI reading the code nobody documented. Two granted patents.</p>
           </div>
