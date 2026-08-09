@@ -47,7 +47,7 @@
   }
   html[data-theme="dark"] .ls-tip{box-shadow:0 18px 44px -18px rgba(0,0,0,.6);}
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; scroll-padding-top:70px;}
   @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto;}}
   body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb),system-ui,sans-serif;
     font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
@@ -90,11 +90,16 @@
   .mtop .name{font-family:var(--fd); font-weight:800; font-size:.95rem; white-space:nowrap; display:flex; align-items:center; gap:8px;}
   .mtop .name i{width:7px; height:7px; border-radius:50%; background:var(--grad);}
   .mtop a.lnk{font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); white-space:nowrap;}
-  @media(max-width:980px){ .rail{display:none;} .page{margin-left:0;} .mtop{display:block;} }
+  @media(max-width:980px){ .rail{display:none;} .page{margin-left:0;} .mtop{display:block;} .mastbar{display:none;} }
 
   /* ===== masthead ===== */
-  .mast{display:flex; justify-content:space-between; align-items:center; padding:26px 0 0;}
-  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem;}
+  /* sticky masthead — same geometry as the architecture page's bar */
+  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
+  .mastbar.stuck{border-bottom-color:var(--hair);}
+  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0; gap:16px;}
+  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
+  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
   .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
     display:flex; align-items:center; gap:10px;}
   .mast .meta i{width:7px; height:7px; border-radius:50%; background:var(--ir1); box-shadow:0 0 8px var(--ir1);}
@@ -487,9 +492,11 @@
 </div>
 
 <main class="page" id="top"><span id="top-anchor"></span>
+  <div class="mastbar" id="mastbar">
   <div class="wrap mast">
-    <span class="who">Prasad Patil</span>
+    <span class="who"><i></i>Prasad Patil</span>
     <span class="meta"><i></i>Open to collaboration · Nagpur, IN · IST &nbsp;&nbsp;<span class="swx" role="group" aria-label="Site sections"><a href="./" aria-current="page">Research</a><a href="architect.html" data-track="/cta/to-architecture">Architecture</a></span></span>
+  </div>
   </div>
 
   <header class="hero">
@@ -973,7 +980,9 @@
       prog.style.height=(max>0?Math.min(1,scrollY/max)*100:0)+"%";
     }
   }
-  addEventListener("scroll",onScroll,{passive:true}); onScroll();
+  var mastbar=document.getElementById("mastbar");
+  function onScroll2(){ onScroll(); if(mastbar) mastbar.classList.toggle("stuck", scrollY>8); }
+  addEventListener("scroll",onScroll2,{passive:true}); onScroll2();
   var spies=document.querySelectorAll("[data-spy]");
   if("IntersectionObserver" in window){
     var secObs=new IntersectionObserver(function(es){
