@@ -1,7 +1,7 @@
 <div align="center">
 <h2>&ldquo;Depth gives you power, breadth gives you reach.<br>
 Wisdom is the knowing when to use which.&rdquo;</h2>
-<p><sub><b>&mdash; Prasad Patil</b></sub></p>
+<sub><b>&mdash; Prasad Patil</b></sub>
 <a href="https://prasadpatil25.github.io/prasadpatil25/"><img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=600&size=20&duration=3200&pause=900&color=5B8CFF&center=true&vCenter=true&width=720&lines=Solution+Architect+%C2%B7+Cloud%2C+AI%2C+Microservices;Quantum+Computing+Researcher+%40+IIIT+Nagpur;Building+the+DOA+framework+%E2%80%94+adaptive+quantum+oracles" alt="Prasad Patil" /></a>
 
 [**Website**](https://prasadpatil25.github.io/prasadpatil25/) &nbsp;·&nbsp; [**LinkedIn**](https://www.linkedin.com/in/prasad-p-patil) &nbsp;·&nbsp; [**Email**](mailto:prasadpatil252@gmail.com) &nbsp;·&nbsp; [**Google Scholar**](https://scholar.google.com/scholar?q=Prasad+Patil+quantum+DOA)
