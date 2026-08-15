@@ -390,8 +390,10 @@
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
   /* shared site switcher — same structure as the architecture page */
+  /* site switcher — geometry is IDENTICAL to the architecture page */
   .swx{display:inline-flex; padding:3px; gap:2px; border:1px solid var(--hair); border-radius:8px; background:var(--paper2); vertical-align:middle;}
-  .swx a{font-family:var(--fm); font-size:.72rem; padding:6px 11px; border-radius:6px; color:var(--mut); transition:.18s var(--ease); white-space:nowrap;}
+  .swx a{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.72rem; letter-spacing:.02em;
+    padding:6px 11px; border-radius:6px; color:var(--mut); transition:.18s var(--ease); white-space:nowrap;}
   .swx a:hover{color:var(--ink);}
   .swx a[aria-current="page"]{background:var(--ink); color:var(--paper); font-weight:500;}
 
