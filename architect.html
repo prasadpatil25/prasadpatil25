@@ -500,6 +500,7 @@
         <a href="architect.html" aria-current="page">Architecture</a>
         <a href="notes/" data-track="/cta/to-notes">Notes</a>
       </span>
+      <button class="kbtn" aria-label="Toggle light and dark theme" title="Flip the sheet — vellum / cyanotype">◇</button>
     </div>
   </div>
 </header>
@@ -934,17 +935,17 @@ PROCEDURE DIVISION.
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* theme */
-  var root=document.documentElement, kd=document.getElementById("kdesk");
+  var root=document.documentElement, kbtns=document.querySelectorAll(".kbtn");
   function setTheme(t){
     root.setAttribute("data-theme",t);
-    if(kd)kd.textContent=(t==="dark")?"\u25C6":"\u25C7";
+    kbtns.forEach(function(b){b.textContent=(t==="dark")?"\u25C6":"\u25C7";});
     try{localStorage.setItem("pp-arch-theme",t);}catch(e){}
   }
   var saved=null; try{saved=localStorage.getItem("pp-arch-theme");}catch(e){}
   setTheme(saved || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
-  if(kd) kd.addEventListener("click",function(){
+  kbtns.forEach(function(b){b.addEventListener("click",function(){
     setTheme(root.getAttribute("data-theme")==="light" ? "dark" : "light");
-  });
+  });});
 
   /* sticky bar */
   var topbar=document.getElementById("topbar");
