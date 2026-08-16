@@ -46,8 +46,9 @@
 .swx a:hover{color:var(--ink);}
 .swx a[aria-current="page"]{background:var(--ink); color:var(--paper); font-weight:400;}
 
-/* mobile: single-row topbar (brand + swx + theme); the left rail becomes a
-   fixed bottom bar holding the section links, dots with labels under them */
+/* mobile: single-row topbar (brand + swx); the left rail becomes a fixed
+   bottom bar holding the section links (dots with labels, horizontally
+   scrollable when tight) plus the theme toggle at its right edge */
 @media(max-width:980px){
   .topbar-in{flex-wrap:wrap; justify-content:flex-start; gap:6px 12px; height:auto; min-height:52px;
     padding-block:6px; overflow:visible;}
@@ -55,24 +56,33 @@
   .topbar-end{margin-left:auto; flex:none;}
   .swx{flex:none;}
   .swx a{padding:6px 7px; font-size:.68rem;}
-  .topbar-end .kbtn{display:inline-block; flex:none;}
+  .topbar-end .kbtn{display:none;}
   .topbar-mid{order:3; width:100%; min-width:0; overflow-x:auto; overflow-y:hidden;}
   .topbar-mid nav.sect{display:none;}
   section[id]{scroll-margin-top:76px; scroll-margin-bottom:72px;}
 
-  /* rail: fixed bottom bar — section links stay one thumb-hop away */
+  /* rail: fixed bottom bar — section links stay one thumb-hop away,
+     theme toggle docked at the right end of the same bar */
   .rail{top:auto; bottom:0; left:0; right:0; width:auto; height:calc(56px + env(safe-area-inset-bottom));
-    flex-direction:row; align-items:stretch; justify-content:center;
-    padding:0 6px env(safe-area-inset-bottom); gap:0; border-right:0; border-top:1px solid var(--tbline);
+    flex-direction:row; align-items:stretch; justify-content:flex-start;
+    padding:0 0 env(safe-area-inset-bottom); gap:0; border-right:0; border-top:1px solid var(--tbline);
     background:var(--tbbg); backdrop-filter:blur(10px);}
-  .rail .mark, .rail .track, .rail .kbtn{display:none;}
-  .rail nav{flex-direction:row; gap:0; margin:0; flex:1; max-width:640px; align-items:stretch;}
-  .rail nav a{flex:1; min-width:0; width:auto; height:auto; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:5px; padding:7px 2px 5px;}
+  .rail .mark, .rail .track{display:none;}
+  .rail nav{order:1; flex-direction:row; gap:0; margin:0; flex:1 1 auto; min-width:0; align-items:stretch;
+    overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:thin;}
+  .rail nav::-webkit-scrollbar{height:3px;}
+  .rail nav::-webkit-scrollbar-track{background:transparent;}
+  .rail nav::-webkit-scrollbar-thumb{background:var(--tbline); border-radius:2px;}
+  .rail nav a{flex:1 1 auto; min-width:56px; width:auto; height:auto; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:5px; padding:7px 4px 5px;}
   .rail nav a i{width:7px; height:7px; flex:none;}
   .rail nav a span{position:static; transform:none; opacity:1; pointer-events:none; background:none;
     border:0; box-shadow:none; padding:0; font-size:.52rem; letter-spacing:.05em; line-height:1.2;
     color:var(--tbmut); text-align:center;}
   .rail nav a.on span{color:var(--ink);}
+  .rail .kbtn{order:2; display:grid; place-items:center; flex:none; align-self:stretch; min-width:52px;
+    font-size:.8rem; padding:0 14px; border:0; border-left:1px solid var(--tbline); border-radius:0;
+    background:transparent; color:var(--tbmut);}
+  .rail .kbtn:hover{color:var(--ink); background:color-mix(in srgb,var(--paper2) 55%,transparent);}
   body{padding-bottom:calc(56px + env(safe-area-inset-bottom));}
 }
