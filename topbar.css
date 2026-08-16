@@ -45,11 +45,31 @@
 .swx a:hover{color:var(--ink);}
 .swx a[aria-current="page"]{background:var(--ink); color:var(--paper); font-weight:400;}
 
-/* mobile: the bar scrolls, mid content hides, end group pins right */
+/* mobile: the topbar compacts and scrolls; the left rail becomes a fixed
+   bottom bar so section nav + theme toggle stay visible */
 @media(max-width:980px){
-  .topbar-in{justify-content:flex-start; overflow-x:auto; gap:14px;}
+  .topbar-in{justify-content:flex-start; overflow-x:auto; gap:12px;}
   .brand{flex:none;}
   .topbar-mid{display:none;}
   .topbar-end{margin-left:auto; flex:none;}
   .swx{flex:none;}
+  .swx a{padding:6px 7px; font-size:.68rem;}
+  .rail{position:fixed; inset:auto 0 0 0; width:auto; height:auto; flex-direction:row; gap:12px;
+    padding:8px var(--pad); padding-bottom:calc(8px + env(safe-area-inset-bottom));
+    border-right:0; border-top:1px solid var(--tbline);
+    background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px);}
+  .rail .mark{display:none;}
+  .rail nav{flex-direction:row; gap:6px; margin-top:0; flex:1; min-width:0;
+    overflow-x:auto; padding:2px; scrollbar-width:none;}
+  .rail nav::-webkit-scrollbar{display:none;}
+  .rail nav a{width:auto; height:auto; display:flex; align-items:center; gap:7px;
+    padding:9px 12px; border-radius:8px; white-space:nowrap;}
+  .rail nav a i{width:7px; height:7px; flex:none;}
+  .rail nav a span{position:static; transform:none; opacity:1; pointer-events:auto;
+    font-family:var(--fm); font-size:.68rem; letter-spacing:.08em; color:var(--tbmut);
+    background:none; border:0; box-shadow:none; padding:0;}
+  .rail nav a:hover span, .rail nav a:focus-visible span{transform:none; opacity:1;}
+  .rail .track{display:none;}
+  .kbtn{flex:none;}
+  .page,#main{padding-bottom:calc(64px + env(safe-area-inset-bottom));}
 }
