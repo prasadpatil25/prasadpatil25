@@ -31,6 +31,8 @@
     --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
     --ease:cubic-bezier(.22,.61,.36,1);
     --pad:clamp(20px,4.5vw,48px);
+    --tbbg:color-mix(in srgb,var(--paper) 90%,transparent); --tbline:var(--hair);
+    --tbpanel:var(--paper2); --tbacc:var(--ir1); --tbmut:var(--mut);
   }
   html[data-theme="dark"]{
     --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
@@ -47,16 +49,6 @@
   .mono{font-family:var(--fm),monospace;}
 
   /* ===== masthead ===== */
-  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
-    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
-  .mastbar.stuck{border-bottom-color:var(--hair);}
-  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0 var(--pad); gap:16px; max-width:1150px; margin:0 auto;}
-  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
-  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
-  .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
-    display:flex; align-items:center; gap:10px;}
-  .mast .meta a{border-bottom:1px solid transparent; transition:border-color .2s;}
-  .mast .meta a:hover{border-color:var(--ir2);}
   .kbtn{font-family:var(--fm); font-size:.74rem; border:1px solid var(--hair); border-radius:9px; padding:5px 9px;
     background:var(--paper2); cursor:pointer; color:var(--mut); transition:.2s var(--ease); flex:none;}
   .kbtn:hover{color:var(--ink); border-color:var(--ir2);}
@@ -120,18 +112,28 @@
   .fin a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
   .fin a:hover{border-color:var(--ir2); color:var(--ink);}
 </style>
+<link rel="stylesheet" href="../topbar.css">
 </head>
-<body>
+<body class="notes">
 
-<div class="mastbar" id="mastbar">
-  <div class="mast">
-    <a class="who" href="../"><i></i>Prasad Patil</a>
-    <span class="meta">
-      <a href="../">Research</a>·<a href="../architect.html">Architecture</a>·<a href="../notes/">Notes</a>
-    </span>
-    <button class="kbtn" id="ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../"><em></em>Prasad Patil</a>
+    <div class="topbar-mid">
+      <span class="status"><i></i>Notes from the lab · Nagpur, IN</span>
+    </div>
+    <div class="topbar-end">
+      <span class="swx" role="group" aria-label="Site sections">
+        <a href="../" data-track="/cta/to-research">Research</a>
+        <a href="../architect.html" data-track="/cta/to-architecture">Architecture</a>
+        <a href="../notes/" aria-current="page">Notes</a>
+      </span>
+      <a class="rss" href="../feed.xml" title="Subscribe to the Notes feed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>RSS</a>
+      <button class="kbtn ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+    </div>
   </div>
-</div>
+</header>
 
 <main class="page">
   <div class="navline"><a href="../notes/">← All notes</a></div>
@@ -214,21 +216,28 @@
   </div>
 </footer>
 
+<nav class="nbot" aria-label="Notes utilities">
+  <a class="rss" href="../feed.xml" title="Subscribe to the Notes feed">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>RSS</a>
+  <button class="kbtn ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+</nav>
+
 <script>
 (function(){
   "use strict";
   var rootEl=document.documentElement;
-  var k=document.getElementById("ktgl");
+  var ks=Array.prototype.slice.call(document.querySelectorAll(".ktgl"));
   function setTheme(t){
     rootEl.setAttribute("data-theme",t);
-    k.textContent=(t==="dark")?"|0\u27E9":"|1\u27E9";
+    var lab=(t==="dark")?"|0\u27E9":"|1\u27E9";
+    ks.forEach(function(k){k.textContent=lab;});
     try{localStorage.setItem("pp-int-theme",t);}catch(e){}
   }
   var saved=null; try{saved=localStorage.getItem("pp-int-theme");}catch(e){}
   setTheme(saved || (window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
-  k.addEventListener("click",function(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");});
-  var bar=document.getElementById("mastbar");
-  function onScroll(){if(window.scrollY>8)bar.classList.add("stuck");else bar.classList.remove("stuck");}
+  ks.forEach(function(k){k.addEventListener("click",function(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");});});
+  var topbar=document.getElementById("topbar");
+  function onScroll(){if(window.scrollY>8)topbar.classList.add("stuck");else topbar.classList.remove("stuck");}
   window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
 })();
 </script>

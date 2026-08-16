@@ -37,6 +37,18 @@
 .topbar-end{display:flex; align-items:center; gap:12px; flex:none;}
 .topbar-end .kbtn{display:none;}
 
+/* notes pages — same topbar as the rest of the site, two notes-specific
+   extras: the RSS link, and the theme toggle (notes pages have no left
+   rail, so the toggle lives here on desktop). On mobile both move to a
+   fixed bottom bar — the notes equivalent of the rail. */
+body.notes .topbar-end .kbtn{display:inline-flex;}
+body.notes .rss{display:inline-flex; align-items:center; gap:7px; font-family:var(--fm),monospace; font-size:.7rem;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--tbmut); border:1px solid var(--tbline);
+  border-radius:999px; padding:7px 13px; background:var(--tbpanel); transition:.2s var(--ease); flex:none; white-space:nowrap;}
+body.notes .rss:hover{color:var(--ink); border-color:var(--ir2); transform:translateY(-1px);}
+body.notes .rss svg{width:12px; height:12px;}
+body.notes .nbot{display:none;}
+
 /* site switcher — geometry identical on both pages */
 .swx{display:inline-flex; padding:3px; gap:2px; border:1px solid var(--tbline); border-radius:8px;
   background:var(--tbpanel); vertical-align:middle;}
@@ -85,4 +97,18 @@
     background:transparent; color:var(--tbmut);}
   .rail .kbtn:hover{color:var(--ink); background:color-mix(in srgb,var(--paper2) 55%,transparent);}
   body{padding-bottom:calc(56px + env(safe-area-inset-bottom));}
+
+  /* notes: RSS + theme slide down out of the topbar into the bottom bar */
+  body.notes .topbar-end .rss, body.notes .topbar-end .kbtn{display:none;}
+  body.notes .nbot{display:flex; position:fixed; bottom:0; left:0; right:0; z-index:60;
+    height:calc(56px + env(safe-area-inset-bottom)); padding:0 0 env(safe-area-inset-bottom);
+    align-items:stretch; border-top:1px solid var(--tbline);
+    background:var(--tbbg); backdrop-filter:blur(10px);}
+  body.notes .nbot .rss{flex:1 1 auto; justify-content:center; border:0; border-radius:0;
+    background:transparent; font-size:.74rem; letter-spacing:.12em; transform:none;}
+  body.notes .nbot .rss svg{width:13px; height:13px;}
+  body.notes .nbot .kbtn{display:grid; place-items:center; flex:none; align-self:stretch; min-width:56px;
+    font-size:.8rem; padding:0 14px; border:0; border-left:1px solid var(--tbline); border-radius:0;
+    background:transparent; color:var(--tbmut);}
+  body.notes .nbot .kbtn:hover{color:var(--ink); background:color-mix(in srgb,var(--paper2) 55%,transparent);}
 }
