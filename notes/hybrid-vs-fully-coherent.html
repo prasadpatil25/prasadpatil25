@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Hybrid vs. fully coherent: the coherence budget · Prasad Patil</title>
+<meta name="description" content="HQ-DOA trades a little coherence for flexibility; FQ-DOA keeps the oracle coherent end to end. Notes on the trade you're actually making.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hybrid vs. fully coherent: the coherence budget">
+<meta property="og:description" content="HQ-DOA trades a little coherence for flexibility; FQ-DOA keeps the oracle coherent end to end. Notes on the trade you're actually making.">
+<meta property="og:url" content="https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html">
+<meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card.png">
+<link rel="canonical" href="https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html">
+<link rel="alternate" type="application/rss+xml" title="Prasad Patil — Notes (RSS)" href="../feed.xml">
+<meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E16" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#6A6A78; --hair:#E5E3DA;
+    --ir1:#4FE0C0; --ir2:#7B9BFF; --ir3:#C77DFF; --ir4:#FF9BC5;
+    --grad:linear-gradient(100deg,var(--ir1),var(--ir2) 38%,var(--ir3) 72%,var(--ir4));
+    --ir2t:#3560D2; --ir3t:#8A3FD6;
+    --grad-text:linear-gradient(100deg,#0B8F78,#3560D2 42%,#8A3FD6 74%,#C7519E);
+    --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --pad:clamp(20px,4.5vw,48px);
+  }
+  html[data-theme="dark"]{
+    --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
+    --ir2t:#7B9BFF; --ir3t:#C77DFF; --grad-text:var(--grad);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb),system-ui,sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  button{font:inherit; color:inherit;}
+  :focus-visible{outline:2px solid var(--ir2); outline-offset:3px; border-radius:4px;}
+  .mono{font-family:var(--fm),monospace;}
+
+  /* ===== masthead ===== */
+  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
+  .mastbar.stuck{border-bottom-color:var(--hair);}
+  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0 var(--pad); gap:16px; max-width:1150px; margin:0 auto;}
+  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
+  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
+  .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    display:flex; align-items:center; gap:10px;}
+  .mast .meta a{border-bottom:1px solid transparent; transition:border-color .2s;}
+  .mast .meta a:hover{border-color:var(--ir2);}
+  .kbtn{font-family:var(--fm); font-size:.74rem; border:1px solid var(--hair); border-radius:9px; padding:5px 9px;
+    background:var(--paper2); cursor:pointer; color:var(--mut); transition:.2s var(--ease); flex:none;}
+  .kbtn:hover{color:var(--ink); border-color:var(--ir2);}
+
+  /* ===== article ===== */
+  .page{max-width:1150px; margin:0 auto; padding-inline:var(--pad);}
+  .navline{padding:22px 0 0; font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);}
+  .navline a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .navline a:hover{border-color:var(--ir2); color:var(--ink);}
+  article{padding:34px 0 10px; max-width:46rem; margin:0 auto;}
+  .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);
+    display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px;}
+  .tag{color:var(--mut); border:1px solid var(--hair); border-radius:999px; padding:3px 9px; background:var(--paper2);
+    letter-spacing:.1em; font-size:.62rem;}
+  h1{font-family:var(--fd); font-weight:800; font-size:clamp(2rem,4.6vw,2.9rem); line-height:1.06; letter-spacing:-.025em; margin:0 0 26px;}
+  h2{font-family:var(--fd); font-weight:700; font-size:1.45rem; letter-spacing:-.015em; margin:44px 0 12px; line-height:1.2;}
+  h3{font-family:var(--fd); font-weight:600; font-size:1.14rem; margin:30px 0 10px;}
+  p{margin:0 0 18px; color:var(--ink);}
+  .lede{font-size:1.13rem; color:var(--mut);}
+  .lede b{color:var(--ink);}
+  a.in{border-bottom:1px solid var(--hair); transition:border-color .2s; color:var(--ir2t);}
+  html[data-theme="dark"] a.in{color:var(--ir2);}
+  a.in:hover{border-color:var(--ir2);}
+  blockquote{margin:26px 0; padding:2px 0 2px 22px; border-left:3px solid var(--grad);
+    color:var(--mut); font-size:1.05rem;}
+  blockquote p{margin:6px 0; color:var(--mut);}
+  blockquote .who{display:block; font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-top:10px;}
+  ul,ol{padding-left:26px; margin:0 0 20px; color:var(--ink);}
+  li{margin:6px 0;}
+  code{font-family:var(--fm),monospace; font-size:.86em; background:var(--paper2); border:1px solid var(--hair);
+    border-radius:6px; padding:2px 6px; color:var(--ir3t);}
+  html[data-theme="dark"] code{color:var(--ir3);}
+  pre{background:var(--paper2); border:1px solid var(--hair); border-radius:14px; padding:18px 20px; overflow-x:auto;
+    font-family:var(--fm),monospace; font-size:.83rem; line-height:1.7; margin:0 0 22px; color:var(--mut);}
+  pre code{background:none; border:none; padding:0; color:var(--ink);}
+  table{width:100%; border-collapse:collapse; margin:0 0 24px; font-size:.92rem;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--hair); vertical-align:top;}
+  th{font-family:var(--fm); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);}
+  td b{color:var(--ink);}
+  hr{border:0; height:1px; background:var(--hair); margin:40px 0;}
+
+  /* ===== foot ===== */
+  .foot{padding:10px 0 70px; max-width:46rem; margin:0 auto;}
+  .foot .back{display:inline-flex; align-items:center; gap:9px; font-family:var(--fm); font-size:.74rem; letter-spacing:.05em;
+    padding:11px 18px; border-radius:999px; border:1px solid var(--hair); background:var(--paper2); transition:.24s var(--ease);}
+  .foot .back:hover{transform:translateY(-2px); border-color:var(--ir2); box-shadow:0 14px 30px -16px rgba(123,155,255,.55);}
+  .foot .back svg{width:12px; height:12px;}
+  .foot .fin-note{font-family:var(--fm); font-size:.68rem; letter-spacing:.08em; color:var(--dim); margin-top:16px; line-height:1.8;}
+  .foot .fin-note a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .foot .fin-note a:hover{border-color:var(--ir2);}
+
+  footer{border-top:1px solid var(--hair); padding:26px 0;}
+  .fin{max-width:1150px; margin:0 auto; padding-inline:var(--pad); display:flex; justify-content:space-between; flex-wrap:wrap;
+    gap:10px; font-family:var(--fm); font-size:.7rem; letter-spacing:.08em; color:var(--dim);}
+  .fin a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .fin a:hover{border-color:var(--ir2); color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="mastbar" id="mastbar">
+  <div class="mast">
+    <a class="who" href="../"><i></i>Prasad Patil</a>
+    <span class="meta">
+      <a href="../">Research</a>·<a href="../architect.html">Architecture</a>·<a href="../notes/">Notes</a>
+    </span>
+    <button class="kbtn" id="ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+  </div>
+</div>
+
+<main class="page">
+  <div class="navline"><a href="../notes/">← All notes</a></div>
+
+  <article>
+    <div class="meta">
+      <span>2026-08-02</span><span>· 5 min read</span><span class="tag">quantum</span><span class="tag">FQ-DOA</span>
+    </div>
+    <h1>Hybrid vs. fully coherent: the coherence budget</h1>
+    <p class="lede">The first DOA note ended on the trade: <em>costs coherence, buys flexibility</em>. This note is about the trade itself — where the coherence goes, and what the two architectures in the family do differently with it.</p>
+
+    <p>Both architectures answer the same problem — estimating a parameter with an oracle that can learn it mid-flight. The difference is <b>where the learning happens</b>, and that single choice decides the cost model.</p>
+
+    <h2>HQ-DOA: learn between runs</h2>
+    <p>HQ-DOA — <b>H</b>ybrid <b>Q</b>uantum <b>DOA</b> — is the practical entry point. The quantum circuit runs a measurement; the classical side reads the outcome, updates its model of the parameter, and steers the next run's oracle accordingly. The oracle's parameters change <em>between</em> runs.</p>
+    <ul>
+      <li><b>Coherence cost:</b> near zero inside any single run. The circuit that runs is essentially a fixed-oracle circuit — a well-understood, robust object.</li>
+      <li><b>Flexibility cost:</b> the adaptation is coarse-grained. You converge run by run, not shot by shot. Rapidly drifting parameters outpace you.</li>
+      <li><b>Hardware reality:</b> runs today's NISQ devices without heroics. This is why it shipped first — and why it was the first quantum-computing publication from IIIT Nagpur.</li>
+    </ul>
+
+    <h2>FQ-DOA: learn inside the evolution</h2>
+    <p>FQ-DOA — <b>F</b>ully coherent — moves the feedback <em>inside</em> the quantum evolution. The oracle's adaptation is unitary; the state never leaves the coherent register to consult a classical model. The parameter and the oracle co-evolve within a single run.</p>
+    <ul>
+      <li><b>Flexibility gain:</b> continuous, shot-level adaptation. The oracle tracks the parameter as it moves, which is exactly what you want in high-rate metrology.</li>
+      <li><b>Coherence cost:</b> every adaptation step spends coherence. A coherently adaptive oracle has a finite budget of change before decoherence wins — you're buying flexibility with your most precious resource.</li>
+      <li><b>Hardware reality:</b> demanding. This is the paper now under review (IEEE Trans. Emerging Topics in Computing), and the whole point of the construction is to make the spending <em>explicit and budgetable</em> rather than accidental.</li>
+    </ul>
+
+    <h2>The budget, as a table</h2>
+    <table>
+      <tr><th></th><th>HQ-DOA</th><th>FQ-DOA</th></tr>
+      <tr><td>Where adaptation lives</td><td>classical, between runs</td><td>unitary, inside a run</td></tr>
+      <tr><td>Granularity</td><td>run-level</td><td>shot-level</td></tr>
+      <tr><td>Coherence spent per adaptation</td><td>≈ 0</td><td>real, finite, counted</td></tr>
+      <tr><td>Drift tolerance</td><td>slow drift</td><td>fast drift</td></tr>
+      <tr><td>Today's NISQ feasibility</td><td><b>now</b></td><td>research frontier</td></tr>
+      <tr><td>Status</td><td>published (IEEE TIM 2026)</td><td>under review (IEEE TETC)</td></tr>
+    </table>
+
+    <h2>Why "budget" is the right word</h2>
+    <p>The reason I keep calling it a budget and not a trade-off is that a budget is something you can <em>account for</em>. In a fixed-oracle world, coherence decay is a nuisance to be minimized away. In the FQ-DOA world, coherence is denominated — you know how much the adaptation spends, you know how much the run can afford, and you can choose the operating point: more adaptation, less run length; or longer runs, slower adaptation.</p>
+
+    <p>That's the shift in mindset the framework pushes for, and it's the same mindset shift I've lived through in enterprise architecture. When you treat a legacy system's downtime budget as a resource to be <em>managed</em> rather than a failure to be avoided, migration strategy changes entirely — you stop asking "can we afford any downtime?" and start asking "what's the cheapest state change that gets us there?"</p>
+
+    <blockquote>
+      <p>"You can't optimize what you refuse to measure — coherence included."</p>
+      <span class="who">— a translation of a very long footnote in the FQ-DOA draft</span>
+    </blockquote>
+
+    <h2>The morphological edge case</h2>
+    <p>The third line, <b>QDOA</b>, is the one that escapes both columns of the table. Morphological adaptation changes the oracle's <em>structure</em>, not just its parameters — a different operator shape entirely. It's the least mature and the most interesting: if parameter adaptation is the budget question, morphological adaptation is the <em>design</em> question, and it comes with the vocabulary problem I mentioned in the <a class="in" href="welcome-to-notes.html">welcome note</a>. You can't grep for a thing nobody has named.</p>
+
+    <p>Start from the beginning if you landed here first: <a class="in" href="what-adaptive-oracles-change.html">what an adaptive oracle actually changes</a>. The homepage's <a class="in" href="../#research">interactive head-to-head</a> is the fastest way to feel the difference without the math.</p>
+  </article>
+
+  <div class="foot">
+    <a class="back" href="../notes/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All notes</a>
+    <div class="fin-note">Back to: <a href="welcome-to-notes.html">Welcome to the notes</a></div>
+  </div>
+</main>
+
+<footer>
+  <div class="fin">
+    <span>Nagpur · Maharashtra · India</span>
+    <span><a href="../feed.xml">RSS</a> · <a href="../">Home</a> · <a href="../architect.html">Architecture</a></span>
+    <span>Interference — built from scratch · GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var rootEl=document.documentElement;
+  var k=document.getElementById("ktgl");
+  function setTheme(t){
+    rootEl.setAttribute("data-theme",t);
+    k.textContent=(t==="dark")?"|0\u27E9":"|1\u27E9";
+    try{localStorage.setItem("pp-int-theme",t);}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem("pp-int-theme");}catch(e){}
+  setTheme(saved || (window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+  k.addEventListener("click",function(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");});
+  var bar=document.getElementById("mastbar");
+  function onScroll(){if(window.scrollY>8)bar.classList.add("stuck");else bar.classList.remove("stuck");}
+  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

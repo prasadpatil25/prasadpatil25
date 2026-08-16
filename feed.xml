@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>Prasad Patil — Notes</title>
+  <link>https://prasadpatil25.github.io/prasadpatil25/notes/</link>
+  <atom:link href="https://prasadpatil25.github.io/prasadpatil25/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Adaptive oracles, quantum circuits, and architecture notes — from Prasad Patil, TCS Solution Architect and PhD researcher at IIIT Nagpur.</description>
+  <language>en</language>
+  <lastBuildDate>Sun, 16 Aug 2026 00:00:00 GMT</lastBuildDate>
+  <ttl>10080</ttl>
+
+  <item>
+    <title>Welcome to the notes</title>
+    <link>https://prasadpatil25.github.io/prasadpatil25/notes/welcome-to-notes.html</link>
+    <guid isPermaLink="true">https://prasadpatil25.github.io/prasadpatil25/notes/welcome-to-notes.html</guid>
+    <pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate>
+    <category>meta</category>
+    <category>DOA</category>
+    <description>Why a writing section on a résumé site — and what this space is for: the DOA framework, the modernization tradecraft, and the things in between.</description>
+    <content:encoded><![CDATA[
+      <p>A résumé tells you what I did. These notes are for the part that doesn't fit on a résumé — the why, the wrong turns, and the long stretches of the trail.</p>
+      <p>This site has two pages doing very different jobs. The <a href="https://prasadpatil25.github.io/prasadpatil25/">homepage</a> is a pitch, in the best sense: here is the research, here is the work, here is the trajectory through the latent space. The <a href="https://prasadpatil25.github.io/prasadpatil25/architect.html">architecture page</a> is a drawing sheet — fifteen years of estates nobody wanted to touch, turned into things that ship.</p>
+      <p>Both are summaries. The <em>notes</em> are the rest.</p>
+      <p><a href="https://prasadpatil25.github.io/prasadpatil25/notes/welcome-to-notes.html">Read the full note →</a></p>
+    ]]></content:encoded>
+  </item>
+
+  <item>
+    <title>What an adaptive oracle actually changes</title>
+    <link>https://prasadpatil25.github.io/prasadpatil25/notes/what-adaptive-oracles-change.html</link>
+    <guid isPermaLink="true">https://prasadpatil25.github.io/prasadpatil25/notes/what-adaptive-oracles-change.html</guid>
+    <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+    <category>quantum</category>
+    <category>HQ-DOA</category>
+    <description>A walk through the idea behind the first DOA paper: a quantum oracle that isn't fixed in advance — and what you give up and gain when it isn't.</description>
+    <content:encoded><![CDATA[
+      <p>Every quantum algorithm leans on an oracle — a black box that answers one question. The DOA claim is simple to state and surprisingly deep to unpack: <b>what if the oracle isn't fixed in advance?</b></p>
+      <p>DOA starts from a question that sounds almost naive: <em>must the oracle be static?</em> In parameter estimation — the measurement regime the paper targets — the object of interest is a continuous parameter encoded into a quantum state. A fixed oracle is built for a point in parameter space. An <strong>adaptive oracle</strong> instead holds a provisional answer and lets the measurement outcome feed back into it.</p>
+      <p>The paper — <em>Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in NISQ Devices</em>, IEEE Trans. Instrumentation &amp; Measurement, 2026 — is <a href="https://doi.org/10.1109/TIM.2026.3659640">published</a>.</p>
+      <p><a href="https://prasadpatil25.github.io/prasadpatil25/notes/what-adaptive-oracles-change.html">Read the full note →</a></p>
+    ]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Hybrid vs. fully coherent: the coherence budget</title>
+    <link>https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html</link>
+    <guid isPermaLink="true">https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html</guid>
+    <pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate>
+    <category>quantum</category>
+    <category>FQ-DOA</category>
+    <description>HQ-DOA trades a little coherence for flexibility; FQ-DOA keeps the oracle coherent end to end. Notes on the trade you're actually making.</description>
+    <content:encoded><![CDATA[
+      <p>Both DOA architectures answer the same problem — estimating a parameter with an oracle that can learn it mid-flight. The difference is <b>where the learning happens</b>, and that single choice decides the cost model.</p>
+      <p><b>HQ-DOA</b> runs the circuit, reads the outcome, and steers the next run classically: near-zero coherence cost inside a run, coarse-grained adaptation. <b>FQ-DOA</b> moves feedback inside the quantum evolution: shot-level adaptation, but every adaptation step spends coherence.</p>
+      <p>The reason to call it a <em>budget</em> and not a trade-off is that a budget is something you can account for — you know how much the adaptation spends, and you can choose the operating point.</p>
+      <p><a href="https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html">Read the full note →</a></p>
+    ]]></content:encoded>
+  </item>
+
+</channel>
+</rss>

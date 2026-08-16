@@ -17,6 +17,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="canonical" href="https://prasadpatil25.github.io/prasadpatil25/">
+<link rel="alternate" type="application/rss+xml" title="Prasad Patil — Notes (RSS)" href="feed.xml">
 <meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E0E16" media="(prefers-color-scheme: dark)">
 <meta name="twitter:card" content="summary_large_image">
@@ -39,6 +40,8 @@
     --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
     --ease:cubic-bezier(.22,.61,.36,1);
     --railw:68px; --pad:clamp(20px,4.5vw,48px);
+    --tbbg:color-mix(in srgb,var(--paper) 90%,transparent); --tbline:var(--hair);
+    --tbpanel:var(--paper2); --tbacc:var(--ir1); --tbmut:var(--mut);
   }
   html[data-theme="dark"]{
     --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
@@ -59,7 +62,7 @@
   .g-ink{background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent;}
 
   /* ===== left rail ===== */
-  .rail{position:fixed; top:0; bottom:0; left:0; width:var(--railw); z-index:60;
+  .rail{position:fixed; top:57px; bottom:0; left:0; width:var(--railw); z-index:60;
     display:flex; flex-direction:column; align-items:center; padding:24px 0; gap:22px;
     border-right:1px solid var(--hair); background:color-mix(in srgb,var(--paper) 86%,transparent); backdrop-filter:blur(8px);}
   .rail .mark{font-family:var(--fd); font-weight:800; font-size:.92rem; letter-spacing:.02em;}
@@ -83,27 +86,7 @@
   .page{margin-left:var(--railw);}
   .wrap{max-width:1150px; margin:0 auto; padding-inline:var(--pad);}
 
-  /* mobile top bar */
-  .mtop{display:none; position:sticky; top:0; z-index:60; background:color-mix(in srgb,var(--paper) 88%,transparent);
-    backdrop-filter:blur(10px); border-bottom:1px solid var(--hair);}
-  .mtop .in{display:flex; align-items:center; gap:18px; height:56px; padding-inline:20px; overflow-x:auto;}
-  .mtop .name{font-family:var(--fd); font-weight:800; font-size:.95rem; white-space:nowrap; display:flex; align-items:center; gap:8px;}
-  .mtop .name i{width:7px; height:7px; border-radius:50%; background:var(--grad);}
-  .mtop a.lnk{font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); white-space:nowrap;}
-  @media(max-width:980px){ .rail{display:none;} .page{margin-left:0;} .mtop{display:block;} .mastbar{display:none;} }
-
-  /* ===== masthead ===== */
-  /* sticky masthead — same geometry as the architecture page's bar */
-  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
-    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
-  .mastbar.stuck{border-bottom-color:var(--hair);}
-  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0; gap:16px;}
-  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
-  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
-  .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
-    display:flex; align-items:center; gap:10px;}
-  .mast .meta i{width:7px; height:7px; border-radius:50%; background:var(--ir1); box-shadow:0 0 8px var(--ir1);}
-  @media(max-width:980px){ .mast{display:none;} }
+  @media(max-width:980px){ .rail{display:none;} .page{margin-left:0;} }
 
   /* ===== hero ===== */
   .hero{position:relative; overflow:hidden;}
@@ -389,50 +372,65 @@
     font-family:var(--fm); font-size:.78rem; padding:11px 18px; border-radius:999px; opacity:0; pointer-events:none; transition:.3s var(--ease); z-index:90;}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
-  /* shared site switcher — same structure as the architecture page */
-  /* site switcher — geometry is IDENTICAL to the architecture page */
-  .swx{display:inline-flex; padding:3px; gap:2px; border:1px solid var(--hair); border-radius:8px; background:var(--paper2); vertical-align:middle;}
-  .swx a{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.72rem; letter-spacing:.02em;
-    padding:6px 11px; border-radius:6px; color:var(--mut); transition:.18s var(--ease); white-space:nowrap;}
-  .swx a:hover{color:var(--ink);}
-  .swx a[aria-current="page"]{background:var(--ink); color:var(--paper); font-weight:500;}
+  /* shared site switcher — moved to topbar.css (identical on both pages) */
 
   /* bridge: rendered in the DESTINATION site's palette, as a preview.
      The architecture page is a drawing sheet — cyanotype ground, white
      linework, and the construction convention: dashed = existing to
      remain, solid = new work. */
-  .bridgeA{display:block; background:#082A45; border:1px solid #17527E; border-radius:0;
+  .bridgeA{display:block; background:#0A192F; border:1px solid #204468; border-radius:0;
     padding:24px 26px; position:relative; overflow:hidden; transition:.28s var(--ease);}
-  .bridgeA:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 0 #17527E;}
+  .bridgeA:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 0 #204468;}
   .bridgeA::after{content:""; position:absolute; inset:0; pointer-events:none;
     background-image:
-      linear-gradient(rgba(23,82,126,.55) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(23,82,126,.55) 1px, transparent 1px),
-      linear-gradient(rgba(18,63,99,.5) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(18,63,99,.5) 1px, transparent 1px);
+      linear-gradient(rgba(32,68,104,.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(32,68,104,.55) 1px, transparent 1px),
+      linear-gradient(rgba(22,46,74,.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22,46,74,.5) 1px, transparent 1px);
     background-size:56px 56px,56px 56px,14px 14px,14px 14px; opacity:.65;}
   .bA-in{display:flex; gap:22px; align-items:center; flex-wrap:wrap; position:relative; z-index:1;}
   .bA-lab{font-family:var(--fm); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
-    color:#8FB3CE; margin:0 0 6px; display:flex; align-items:center; gap:9px;}
-  .bA-lab em{font-style:normal; border:1px solid #17527E; padding:2px 7px; color:#A6C4DC;}
+    color:#A8B2D1; margin:0 0 6px; display:flex; align-items:center; gap:9px;}
+  .bA-lab em{font-style:normal; border:1px solid #204468; padding:2px 7px; color:#A8B2D1;}
   .bA-in h3{font-family:"Barlow Condensed",var(--fd); font-weight:700; font-size:1.6rem;
-    letter-spacing:.03em; text-transform:uppercase; margin:0 0 8px; color:#EAF3FA;}
-  .bA-in h3 s{text-decoration:none; color:#F0A45C;} .bA-in h3 u{text-decoration:none; color:#62E5C2;}
-  .bA-in p{margin:0; color:#A6C4DC; font-size:.88rem;}
-  .bA-in p b{color:#EAF3FA; font-weight:600;}
+    letter-spacing:.03em; text-transform:uppercase; margin:0 0 8px; color:#E6F1FF;}
+  .bA-in h3 s{text-decoration:none; color:#FF7A59;} .bA-in h3 u{text-decoration:none; color:#64FFDA;}
+  .bA-in p{margin:0; color:#A8B2D1; font-size:.88rem;}
+  .bA-in p b{color:#E6F1FF; font-weight:600;}
   .bA-go{font-family:var(--fm); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
-    color:#062038; background:#62E5C2; border-radius:0; padding:11px 18px; white-space:nowrap; transition:.2s var(--ease);}
-  .bridgeA:hover .bA-go{background:#EAF3FA;}
+    color:#0A192F; background:#64FFDA; border-radius:0; padding:11px 18px; white-space:nowrap; transition:.2s var(--ease);}
+  .bridgeA:hover .bA-go{background:#E6F1FF;}
   .bA-viz{flex:none; display:flex; align-items:center; gap:12px;}
   /* existing to remain: dashed, light */
-  .bA-mono{width:46px; height:46px; border:1.5px dashed #F0A45C; border-radius:0;
+  .bA-mono{width:46px; height:46px; border:1.5px dashed #FF7A59; border-radius:0;
     display:grid; grid-template-columns:repeat(2,1fr); gap:3px; padding:6px;}
-  .bA-mono i{background:rgba(240,164,92,.45); border-radius:0;}
-  .bA-arrow{color:#8FB3CE; font-family:var(--fm); font-size:.85rem;}
+  .bA-mono i{background:rgba(255,122,89,.45); border-radius:0;}
+  .bA-arrow{color:#79ACF2; font-family:var(--fm); font-size:.85rem;}
   /* new work: solid, bold */
   .bA-mesh{position:relative; width:54px; height:46px;}
   .bA-mesh i{position:absolute; width:11px; height:9px; border-radius:0;
-    border:1.5px solid #62E5C2; background:#0C3556;}
+    border:1.5px solid #64FFDA; background:#112240;}
+  /* dark sheet: flip the bridge to the architecture sheet's light palette */
+  html[data-theme="dark"] .bridgeA{background:#F7F6F1; border:1px solid #13131B;}
+  html[data-theme="dark"] .bridgeA:hover{box-shadow:6px 6px 0 0 #13131B;}
+  html[data-theme="dark"] .bridgeA::after{background-image:
+      linear-gradient(rgba(19,19,27,.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(19,19,27,.09) 1px, transparent 1px),
+      linear-gradient(rgba(19,19,27,.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(19,19,27,.14) 1px, transparent 1px);
+    opacity:.65;}
+  html[data-theme="dark"] .bA-in .bA-lab{color:#6A6A78;}
+  html[data-theme="dark"] .bA-lab em{border-color:#13131B; color:#6A6A78;}
+  html[data-theme="dark"] .bA-in h3{color:#13131B;}
+  html[data-theme="dark"] .bA-in h3 s{color:#B84A22;} html[data-theme="dark"] .bA-in h3 u{color:#166B52;}
+  html[data-theme="dark"] .bA-in p{color:#585866;}
+  html[data-theme="dark"] .bA-in p b{color:#13131B;}
+  html[data-theme="dark"] .bA-go{color:#13131B; background:#FFFFFF; border:1px solid #13131B;}
+  html[data-theme="dark"] .bridgeA:hover .bA-go{background:#13131B; color:#F7F6F1;}
+  html[data-theme="dark"] .bA-mono{border-color:#B84A22;}
+  html[data-theme="dark"] .bA-mono i{background:rgba(184,74,34,.45);}
+  html[data-theme="dark"] .bA-arrow{color:#1E5494;}
+  html[data-theme="dark"] .bA-mesh i{border-color:#166B52; background:#F7F6F1;}
   @media(max-width:640px){.bA-viz{display:none;}}
   .skip{position:fixed; top:-60px; left:16px; z-index:100; background:var(--ink); color:var(--paper);
     font-family:var(--fm); font-size:.8rem; padding:10px 16px; border-radius:8px; transition:top .2s var(--ease);}
@@ -442,7 +440,7 @@
     @page{ margin:12mm; }
     /* Interactive pieces render as empty boxes on paper — drop them and their
        headings, rather than printing a title over a blank rectangle. */
-    .rail,.mtop,.skip,#ent,#field,.grid-lines,.toast,.cta,.q-act,.g-act,.swx,
+    .topbar,.rail,.skip,#ent,#field,.grid-lines,.toast,.cta,.q-act,.g-act,.swx,
     .qubit,#hqd,#doad,#map,#bridge,.ls-field,.legend,.obs,.intents,
     .plinks,.arch-cap{display:none !important;}
     html,body{background:#fff !important; color:#000 !important; font-size:10pt; line-height:1.45;}
@@ -478,6 +476,7 @@
   }
   #ent{position:fixed; inset:0; z-index:0; pointer-events:none;}
 </style>
+<link rel="stylesheet" href="topbar.css">
 </head>
 <body>
 
@@ -497,24 +496,25 @@
   <div class="track" aria-hidden="true"><b id="prog"></b></div>
 </aside>
 
-<div class="mtop">
-  <div class="in">
-    <span class="name"><i></i>Prasad Patil</span>
-    <a class="lnk" href="#signal">Signal</a><a class="lnk" href="#map">Map</a><a class="lnk" href="#research">Research</a>
-    <a class="lnk" href="#path">Path</a><a class="lnk" href="#code">Code</a><a class="lnk" href="#contact">Contact</a><span class="swx" role="group" aria-label="Site sections" style="margin-left:6px"><a href="./" aria-current="page">Research</a><a href="architect.html" data-track="/cta/to-architecture">Architecture</a></span>
-    <button class="kbtn" id="kmob" aria-label="Toggle light and dark theme" style="margin-left:auto">|1⟩</button>
-  </div>
-</div>
-
 <canvas id="ent" aria-hidden="true"></canvas>
-<main class="page" id="top"><span id="top-anchor"></span>
-  <div class="mastbar" id="mastbar">
-  <div class="wrap mast">
-    <span class="who"><i></i>Prasad Patil</span>
-    <span class="meta"><i></i>Open to collaboration · Nagpur, IN · IST &nbsp;&nbsp;<span class="swx" role="group" aria-label="Site sections"><a href="./" aria-current="page">Research</a><a href="architect.html" data-track="/cta/to-architecture">Architecture</a></span></span>
-  </div>
-  </div>
 
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top"><em></em>Prasad Patil</a>
+    <div class="topbar-mid">
+      <span class="status"><i></i>Open to collaboration · Nagpur, IN · IST</span>
+    </div>
+    <div class="topbar-end">
+      <span class="swx" role="group" aria-label="Site sections">
+        <a href="./" aria-current="page">Research</a>
+        <a href="architect.html" data-track="/cta/to-architecture">Architecture</a>
+        <a href="notes/" data-track="/cta/to-notes">Notes</a>
+      </span>
+    </div>
+  </div>
+</header>
+
+<main class="page" id="top"><span id="top-anchor"></span>
   <header class="hero">
     <canvas id="field" aria-hidden="true"></canvas>
     <div class="wrap hero-in">
@@ -542,6 +542,7 @@
   <section class="sec latest" aria-label="Latest updates">
     <div class="wrap">
       <div class="sh reveal" style="margin-bottom:14px"><span class="lab">Latest</span><span class="rule"></span></div>
+      <div class="lt reveal"><span class="d">2026</span><span><b>Notes are live</b> &mdash; a new writing section: the DOA framework, explainers, and build logs. <a href="notes/" data-track="/cta/to-notes">Read the notes</a> · <a href="feed.xml" data-track="/cta/rss">RSS</a></span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>HQ-DOA published</b> &mdash; &ldquo;Quantum State Measurement System With Dynamic Oracle Adaptation&rdquo;, IEEE Trans. Instrumentation &amp; Measurement — first quantum-computing publication from IIIT Nagpur. <a href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">DOI</a></span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>FQ-DOA submitted</b> to IEEE Trans. Emerging Topics in Computing — under review.</span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>MindSpark released</b> — zero-dependency collaborative mind-mapping. <a href="https://github.com/prasadpatil25/MindSpark" target="_blank" rel="noopener">Repo</a></span></div>
@@ -551,7 +552,7 @@
 
   <section class="sec" id="signal">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">Signal</span><h2><span class="qt" data-t="The short version">The short version</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">Signal</span><h2 aria-label="The short version"><span class="qt" aria-hidden="true" data-t="The short version">The short version</span></h2><span class="rule"></span></div>
       <div class="sig-grid reveal">
         <div>
           <p class="lead">I build systems that have to work — and lately, <em>systems nobody has built before.</em></p>
@@ -582,7 +583,7 @@
 
   <section class="sec" id="map">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">Latent map</span><h2><span class="qt" data-t="Fifteen years, embedded">Fifteen years, embedded</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">Latent map</span><h2 aria-label="Fifteen years, embedded"><span class="qt" aria-hidden="true" data-t="Fifteen years, embedded">Fifteen years, embedded</span></h2><span class="rule"></span></div>
       <p class="map-intro reveal">Every career is a trajectory through some latent space. Here's mine, plotted on the two axes that matter: <strong>classical → quantum</strong> and <strong>building → learning</strong>. Hover any point. The bottom-right quadrant is where this is all headed.</p>
       <div class="ls-field reveal" id="lsf">
         <span class="ax h" aria-hidden="true"></span><span class="ax v" aria-hidden="true"></span>
@@ -620,7 +621,7 @@
 
   <section class="sec" id="research">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">Research</span><h2><span class="qt" data-t="Dynamic Oracle Adaptation">Dynamic Oracle Adaptation</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">Research</span><h2 aria-label="Dynamic Oracle Adaptation"><span class="qt" aria-hidden="true" data-t="Dynamic Oracle Adaptation">Dynamic Oracle Adaptation</span></h2><span class="rule"></span></div>
       <p class="doa-line reveal">What if a quantum oracle didn't have to be fixed in advance? Instead of hard-coding the black box an algorithm queries, DOA methods synthesize it on the fly from what earlier measurements revealed.</p>
       <p class="doa-line reveal">In <b style="color:var(--ink)">HQ-DOA</b> that means composing two algorithms that are normally used apart: <b style="color:var(--ink)">Simon's</b> period detection uncovers the hidden structure of the problem, DOA turns that structure into a freshly-built oracle, and <b style="color:var(--ink)">Grover's</b> amplitude amplification then searches the space that structure has already cut in half — with no mid-circuit measurement to collapse the state along the way.</p>
       <p class="doa-chips reveal"><b>HQ-DOA</b> hybrid · <b>FQ-DOA</b> fully coherent · <b>QDOA</b> morphological</p>
@@ -776,7 +777,7 @@
 
   <section class="sec" id="path">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">Trajectory</span><h2><span class="qt" data-t="Fifteen years of shipping">Fifteen years of shipping</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">Trajectory</span><h2 aria-label="Fifteen years of shipping"><span class="qt" aria-hidden="true" data-t="Fifteen years of shipping">Fifteen years of shipping</span></h2><span class="rule"></span></div>
 
       <div class="tj reveal">
         <span class="yr">2023 — now</span>
@@ -815,7 +816,7 @@
 
   <section class="sec" id="code">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">Open source</span><h2><span class="qt" data-t="Built in the open">Built in the open</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">Open source</span><h2 aria-label="Built in the open"><span class="qt" aria-hidden="true" data-t="Built in the open">Built in the open</span></h2><span class="rule"></span></div>
 
       <a class="os reveal" href="https://github.com/prasadpatil25/MindSpark" target="_blank" rel="noopener" data-repo="MindSpark">
         <div>
@@ -838,7 +839,7 @@
 
   <section class="sec" id="record">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">Record</span><h2><span class="qt" data-t="Patents, credentials, honors">Patents, credentials, honors</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">Record</span><h2 aria-label="Patents, credentials, honors"><span class="qt" aria-hidden="true" data-t="Patents, credentials, honors">Patents, credentials, honors</span></h2><span class="rule"></span></div>
       <div class="rec reveal">
         <div class="rc">
           <h4>Patents &amp; fellowship</h4>
@@ -880,7 +881,7 @@
 
   <section class="sec" id="bridge">
     <div class="wrap">
-      <div class="sh reveal"><span class="lab">The other half</span><h2><span class="qt" data-t="Production code on weekdays">Production code on weekdays</span></h2><span class="rule"></span></div>
+      <div class="sh reveal"><span class="lab">The other half</span><h2 aria-label="Production code on weekdays"><span class="qt" aria-hidden="true" data-t="Production code on weekdays">Production code on weekdays</span></h2><span class="rule"></span></div>
       <a class="bridgeA reveal" href="architect.html">
         <div class="bA-in">
           <span class="bA-viz" aria-hidden="true">
@@ -928,7 +929,7 @@
     <div class="wrap fin">
       <span>Nagpur · Maharashtra · India &nbsp;·&nbsp; <a href="architect.html" style="color:var(--ir2t)">Architecture work →</a></span>
       <span class="obs" id="obs" hidden title="Each visit collapses this page's state — visitor count via GoatCounter"><i></i><span class="ket">|&psi;&#10217;</span> observed <b id="obsn">—</b> times</span>
-      <span>Interference — built from scratch · GitHub Pages · your cursor is entangled</span>
+      <span><a href="notes/" style="color:var(--ir2t)">Notes</a> · <a href="feed.xml" style="color:var(--ir2t)">RSS</a> &nbsp;·&nbsp; Interference — built from scratch · GitHub Pages · your cursor is entangled</span>
     </div>
   </footer>
 </main>
@@ -995,8 +996,8 @@
       prog.style.height=(max>0?Math.min(1,scrollY/max)*100:0)+"%";
     }
   }
-  var mastbar=document.getElementById("mastbar");
-  function onScroll2(){ onScroll(); if(mastbar) mastbar.classList.toggle("stuck", scrollY>8); }
+  var topbar=document.getElementById("topbar");
+  function onScroll2(){ onScroll(); if(topbar) topbar.classList.toggle("stuck", scrollY>8); }
   addEventListener("scroll",onScroll2,{passive:true}); onScroll2();
   var spies=document.querySelectorAll("[data-spy]");
   if("IntersectionObserver" in window){
@@ -1060,18 +1061,16 @@
 
   /* ---------- theme: |0> dark, |1> light ---------- */
   var rootEl=document.documentElement;
-  var kd=document.getElementById("kdesk"), km=document.getElementById("kmob");
+  var kd=document.getElementById("kdesk");
   function setTheme(t){
     rootEl.setAttribute("data-theme",t);
-    var k=(t==="dark")?"|0\u27E9":"|1\u27E9";
-    if(kd)kd.textContent=k; if(km)km.textContent=k;
+    if(kd)kd.textContent=(t==="dark")?"|0\u27E9":"|1\u27E9";
     try{localStorage.setItem("pp-int-theme",t);}catch(e){}
   }
   var savedT=null; try{savedT=localStorage.getItem("pp-int-theme");}catch(e){}
   setTheme(savedT || (window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
   function flipT(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");}
   if(kd)kd.addEventListener("click",flipT);
-  if(km)km.addEventListener("click",flipT);
 
   /* ---------- live qubit ---------- */
   (function(){

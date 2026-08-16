@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>What an adaptive oracle actually changes · Prasad Patil</title>
+<meta name="description" content="A walk through the idea behind the first DOA paper: a quantum oracle that isn't fixed in advance — and what you give up and gain when it isn't.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What an adaptive oracle actually changes">
+<meta property="og:description" content="A quantum oracle that isn't fixed in advance — and what you give up and gain when it isn't.">
+<meta property="og:url" content="https://prasadpatil25.github.io/prasadpatil25/notes/what-adaptive-oracles-change.html">
+<meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card.png">
+<link rel="canonical" href="https://prasadpatil25.github.io/prasadpatil25/notes/what-adaptive-oracles-change.html">
+<link rel="alternate" type="application/rss+xml" title="Prasad Patil — Notes (RSS)" href="../feed.xml">
+<meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E16" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#6A6A78; --hair:#E5E3DA;
+    --ir1:#4FE0C0; --ir2:#7B9BFF; --ir3:#C77DFF; --ir4:#FF9BC5;
+    --grad:linear-gradient(100deg,var(--ir1),var(--ir2) 38%,var(--ir3) 72%,var(--ir4));
+    --ir2t:#3560D2; --ir3t:#8A3FD6;
+    --grad-text:linear-gradient(100deg,#0B8F78,#3560D2 42%,#8A3FD6 74%,#C7519E);
+    --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --pad:clamp(20px,4.5vw,48px);
+  }
+  html[data-theme="dark"]{
+    --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
+    --ir2t:#7B9BFF; --ir3t:#C77DFF; --grad-text:var(--grad);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb),system-ui,sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  button{font:inherit; color:inherit;}
+  :focus-visible{outline:2px solid var(--ir2); outline-offset:3px; border-radius:4px;}
+  .mono{font-family:var(--fm),monospace;}
+
+  /* ===== masthead ===== */
+  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
+  .mastbar.stuck{border-bottom-color:var(--hair);}
+  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0 var(--pad); gap:16px; max-width:1150px; margin:0 auto;}
+  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
+  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
+  .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    display:flex; align-items:center; gap:10px;}
+  .mast .meta a{border-bottom:1px solid transparent; transition:border-color .2s;}
+  .mast .meta a:hover{border-color:var(--ir2);}
+  .kbtn{font-family:var(--fm); font-size:.74rem; border:1px solid var(--hair); border-radius:9px; padding:5px 9px;
+    background:var(--paper2); cursor:pointer; color:var(--mut); transition:.2s var(--ease); flex:none;}
+  .kbtn:hover{color:var(--ink); border-color:var(--ir2);}
+
+  /* ===== article ===== */
+  .page{max-width:1150px; margin:0 auto; padding-inline:var(--pad);}
+  .navline{padding:22px 0 0; font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);}
+  .navline a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .navline a:hover{border-color:var(--ir2); color:var(--ink);}
+  article{padding:34px 0 10px; max-width:46rem; margin:0 auto;}
+  .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);
+    display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px;}
+  .tag{color:var(--mut); border:1px solid var(--hair); border-radius:999px; padding:3px 9px; background:var(--paper2);
+    letter-spacing:.1em; font-size:.62rem;}
+  h1{font-family:var(--fd); font-weight:800; font-size:clamp(2rem,4.6vw,2.9rem); line-height:1.06; letter-spacing:-.025em; margin:0 0 26px;}
+  h2{font-family:var(--fd); font-weight:700; font-size:1.45rem; letter-spacing:-.015em; margin:44px 0 12px; line-height:1.2;}
+  h3{font-family:var(--fd); font-weight:600; font-size:1.14rem; margin:30px 0 10px;}
+  p{margin:0 0 18px; color:var(--ink);}
+  .lede{font-size:1.13rem; color:var(--mut);}
+  .lede b{color:var(--ink);}
+  a.in{border-bottom:1px solid var(--hair); transition:border-color .2s; color:var(--ir2t);}
+  html[data-theme="dark"] a.in{color:var(--ir2);}
+  a.in:hover{border-color:var(--ir2);}
+  blockquote{margin:26px 0; padding:2px 0 2px 22px; border-left:3px solid var(--grad);
+    color:var(--mut); font-size:1.05rem;}
+  blockquote p{margin:6px 0; color:var(--mut);}
+  blockquote .who{display:block; font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-top:10px;}
+  ul,ol{padding-left:26px; margin:0 0 20px; color:var(--ink);}
+  li{margin:6px 0;}
+  code{font-family:var(--fm),monospace; font-size:.86em; background:var(--paper2); border:1px solid var(--hair);
+    border-radius:6px; padding:2px 6px; color:var(--ir3t);}
+  html[data-theme="dark"] code{color:var(--ir3);}
+  pre{background:var(--paper2); border:1px solid var(--hair); border-radius:14px; padding:18px 20px; overflow-x:auto;
+    font-family:var(--fm),monospace; font-size:.83rem; line-height:1.7; margin:0 0 22px; color:var(--mut);}
+  pre code{background:none; border:none; padding:0; color:var(--ink);}
+  figure{margin:30px 0; border:1px solid var(--hair); border-radius:16px; background:var(--paper2); padding:18px;}
+  figure img{width:100%; height:auto; display:block; border-radius:10px;}
+  figcaption{font-family:var(--fm); font-size:.68rem; color:var(--dim); margin-top:12px; text-align:center; letter-spacing:.04em;}
+  .cmp{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0;}
+  @media(max-width:620px){.cmp{grid-template-columns:1fr;}}
+  .cmp .pane{border:1px solid var(--hair); border-radius:14px; background:var(--paper2); padding:16px 18px;}
+  .cmp .pane h4{font-family:var(--fm); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 10px;}
+  .cmp .pane.fixed h4{color:var(--dim);}
+  .cmp .pane.adapt h4{color:var(--ir2t);}
+  .cmp .pane ul{margin:0;}
+  hr{border:0; height:1px; background:var(--hair); margin:40px 0;}
+
+  /* ===== foot ===== */
+  .foot{padding:10px 0 70px; max-width:46rem; margin:0 auto;}
+  .foot .back{display:inline-flex; align-items:center; gap:9px; font-family:var(--fm); font-size:.74rem; letter-spacing:.05em;
+    padding:11px 18px; border-radius:999px; border:1px solid var(--hair); background:var(--paper2); transition:.24s var(--ease);}
+  .foot .back:hover{transform:translateY(-2px); border-color:var(--ir2); box-shadow:0 14px 30px -16px rgba(123,155,255,.55);}
+  .foot .back svg{width:12px; height:12px;}
+  .foot .fin-note{font-family:var(--fm); font-size:.68rem; letter-spacing:.08em; color:var(--dim); margin-top:16px; line-height:1.8;}
+  .foot .fin-note a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .foot .fin-note a:hover{border-color:var(--ir2);}
+
+  footer{border-top:1px solid var(--hair); padding:26px 0;}
+  .fin{max-width:1150px; margin:0 auto; padding-inline:var(--pad); display:flex; justify-content:space-between; flex-wrap:wrap;
+    gap:10px; font-family:var(--fm); font-size:.7rem; letter-spacing:.08em; color:var(--dim);}
+  .fin a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .fin a:hover{border-color:var(--ir2); color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="mastbar" id="mastbar">
+  <div class="mast">
+    <a class="who" href="../"><i></i>Prasad Patil</a>
+    <span class="meta">
+      <a href="../">Research</a>·<a href="../architect.html">Architecture</a>·<a href="../notes/">Notes</a>
+    </span>
+    <button class="kbtn" id="ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+  </div>
+</div>
+
+<main class="page">
+  <div class="navline"><a href="../notes/">← All notes</a></div>
+
+  <article>
+    <div class="meta">
+      <span>2026-08-10</span><span>· 6 min read</span><span class="tag">quantum</span><span class="tag">HQ-DOA</span>
+    </div>
+    <h1>What an adaptive oracle actually changes</h1>
+    <p class="lede">Every quantum algorithm leans on an oracle — a black box that answers one question. The DOA claim is simple to state and surprisingly deep to unpack: <b>what if the oracle isn't fixed in advance?</b></p>
+
+    <p>The paper — <em>Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in NISQ Devices</em>, IEEE Trans. Instrumentation &amp; Measurement, 2026 — is <a class="in" href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">published</a>. This post is the version I'd give over coffee, before the equations arrive.</p>
+
+    <h2>First, what an oracle is</h2>
+    <p>In quantum computing, an <em>oracle</em> is a subroutine that encodes a problem as a unitary operation: you hand it a state, it marks the answers. Grover's algorithm treats search as an oracle that flips the sign of the marked state; phase estimation treats the operator whose eigenvalues you want as an oracle. The oracle is where the <em>problem</em> lives. Everything else is machinery for extracting the answer efficiently.</p>
+
+    <p>The convention — as old as the black-box model itself — is that the oracle is a fixed input. You design it once, you load it, you run the circuit. The algorithm adapts around a <em>static</em> problem encoding. That assumption is so baked in that it's usually not even stated.</p>
+
+    <h2>The thing nobody stated</h2>
+    <p>DOA starts from a question that sounds almost naive: <em>must the oracle be static?</em> In parameter estimation — the measurement regime the paper targets — the object of interest is a continuous parameter encoded into a quantum state. A fixed oracle is built for a point in parameter space. When the true parameter drifts, or when you only have coarse prior knowledge, a fixed oracle is answering a question that's slightly wrong.</p>
+
+    <p>An <strong>adaptive oracle</strong> instead holds a provisional answer and lets the measurement outcome feed back into it — the oracle updates based on what the state tells you it's becoming. The algorithm learns the parameter <em>and</em> refines the tool it uses to read it, at the same time.</p>
+
+    <div class="cmp">
+      <div class="pane fixed">
+        <h4>Fixed oracle</h4>
+        <ul>
+          <li>Designed once, hard-coded into the circuit</li>
+          <li>Optimal only at the design point</li>
+          <li>Drift and uncertainty are noise to fight</li>
+          <li>Simple to reason about, simple to trust</li>
+        </ul>
+      </div>
+      <div class="pane adapt">
+        <h4>Adaptive oracle (DOA)</h4>
+        <ul>
+          <li>Refined by measurement outcomes mid-run</li>
+          <li>Tracks a moving parameter</li>
+          <li>Drift becomes signal to learn from</li>
+          <li>Costs coherence, buys flexibility</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>What you give up</h2>
+    <p>The honest part of the trade is <em>coherence</em>. A fixed oracle is designed offline, in the classical realm, where you have all the time in the world and no decoherence. An adaptive oracle has to do some of its decision-making <em>inside</em> the fragile quantum run — each adaptation step costs a little of the very resource you're trying to protect. On NISQ devices — noisy, intermediate-scale, coherence-starved — that cost is real and must be accounted for, not hand-waved.</p>
+
+    <p>This is why the framework is split into three lines of work, and why the split isn't cosmetic:</p>
+    <ul>
+      <li><b>HQ-DOA</b> — hybrid. Classical feedback steers the oracle between runs. Cheap, robust, ready now.</li>
+      <li><b>FQ-DOA</b> — fully coherent. The adaptation happens entirely within the quantum evolution. Ambitious, efficient in principle, harder on hardware.</li>
+      <li><b>QDOA</b> — morphological. The oracle's very structure can change shape, not just parameters.</li>
+    </ul>
+
+    <p>You can try the difference on the <a class="in" href="../#research">homepage's interactive panels</a> — the fixed-vs-adaptive head-to-head runs the same estimation problem both ways and shows the convergence gap. It's the paper, reduced to a visual.</p>
+
+    <h2>Why it matters beyond the abstract</h2>
+    <p>Parameter estimation is not a niche. It's the physics under quantum sensing, metrology, magnetometry, and a good fraction of the "practical quantum advantage" roadmap. A measurement system whose oracle adapts is a measurement system that stays near-optimal when the environment — or the device — drifts. In that sense the framing that interests me most is the one that comes from my day job: <em>state that has to keep working while you change the system around it.</em> A mainframe migration has the same spine. Adapt, don't rebuild from scratch.</p>
+
+    <blockquote>
+      <p>"Adaptive oracles begin here: a state that hasn't decided."</p>
+      <span class="who">— the homepage's live-qubit caption, which is not a metaphor</span>
+    </blockquote>
+
+    <p>The next note takes the coherence trade head-on: <a class="in" href="hybrid-vs-fully-coherent.html">hybrid vs. fully coherent</a>, and how you budget for the thing you're spending. For the formal version, the paper is <a class="in" href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">open at the IEEE DOI</a>.</p>
+  </article>
+
+  <div class="foot">
+    <a class="back" href="../notes/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All notes</a>
+    <div class="fin-note">Next: <a href="hybrid-vs-fully-coherent.html">Hybrid vs. fully coherent: the coherence budget</a></div>
+  </div>
+</main>
+
+<footer>
+  <div class="fin">
+    <span>Nagpur · Maharashtra · India</span>
+    <span><a href="../feed.xml">RSS</a> · <a href="../">Home</a> · <a href="../architect.html">Architecture</a></span>
+    <span>Interference — built from scratch · GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var rootEl=document.documentElement;
+  var k=document.getElementById("ktgl");
+  function setTheme(t){
+    rootEl.setAttribute("data-theme",t);
+    k.textContent=(t==="dark")?"|0\u27E9":"|1\u27E9";
+    try{localStorage.setItem("pp-int-theme",t);}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem("pp-int-theme");}catch(e){}
+  setTheme(saved || (window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+  k.addEventListener("click",function(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");});
+  var bar=document.getElementById("mastbar");
+  function onScroll(){if(window.scrollY>8)bar.classList.add("stuck");else bar.classList.remove("stuck");}
+  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

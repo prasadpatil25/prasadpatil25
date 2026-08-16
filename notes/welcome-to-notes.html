@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Welcome to the notes · Prasad Patil</title>
+<meta name="description" content="Why a writing section on a résumé site — and what this space is for: the DOA framework, modernization tradecraft, and the things in between.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Welcome to the notes">
+<meta property="og:description" content="Why a writing section on a résumé site — and what this space is for.">
+<meta property="og:url" content="https://prasadpatil25.github.io/prasadpatil25/notes/welcome-to-notes.html">
+<meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card.png">
+<link rel="canonical" href="https://prasadpatil25.github.io/prasadpatil25/notes/welcome-to-notes.html">
+<link rel="alternate" type="application/rss+xml" title="Prasad Patil — Notes (RSS)" href="../feed.xml">
+<meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E16" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#6A6A78; --hair:#E5E3DA;
+    --ir1:#4FE0C0; --ir2:#7B9BFF; --ir3:#C77DFF; --ir4:#FF9BC5;
+    --grad:linear-gradient(100deg,var(--ir1),var(--ir2) 38%,var(--ir3) 72%,var(--ir4));
+    --ir2t:#3560D2; --ir3t:#8A3FD6;
+    --grad-text:linear-gradient(100deg,#0B8F78,#3560D2 42%,#8A3FD6 74%,#C7519E);
+    --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --pad:clamp(20px,4.5vw,48px);
+  }
+  html[data-theme="dark"]{
+    --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
+    --ir2t:#7B9BFF; --ir3t:#C77DFF; --grad-text:var(--grad);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb),system-ui,sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  button{font:inherit; color:inherit;}
+  :focus-visible{outline:2px solid var(--ir2); outline-offset:3px; border-radius:4px;}
+  .mono{font-family:var(--fm),monospace;}
+
+  /* ===== masthead ===== */
+  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
+  .mastbar.stuck{border-bottom-color:var(--hair);}
+  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0 var(--pad); gap:16px; max-width:1150px; margin:0 auto;}
+  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
+  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
+  .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    display:flex; align-items:center; gap:10px;}
+  .mast .meta a{border-bottom:1px solid transparent; transition:border-color .2s;}
+  .mast .meta a:hover{border-color:var(--ir2);}
+  .kbtn{font-family:var(--fm); font-size:.74rem; border:1px solid var(--hair); border-radius:9px; padding:5px 9px;
+    background:var(--paper2); cursor:pointer; color:var(--mut); transition:.2s var(--ease); flex:none;}
+  .kbtn:hover{color:var(--ink); border-color:var(--ir2);}
+
+  /* ===== article ===== */
+  .page{max-width:1150px; margin:0 auto; padding-inline:var(--pad);}
+  .navline{padding:22px 0 0; font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);}
+  .navline a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .navline a:hover{border-color:var(--ir2); color:var(--ink);}
+  article{padding:34px 0 10px; max-width:46rem; margin:0 auto;}
+  .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);
+    display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px;}
+  .tag{color:var(--mut); border:1px solid var(--hair); border-radius:999px; padding:3px 9px; background:var(--paper2);
+    letter-spacing:.1em; font-size:.62rem;}
+  h1{font-family:var(--fd); font-weight:800; font-size:clamp(2rem,4.6vw,2.9rem); line-height:1.06; letter-spacing:-.025em; margin:0 0 26px;}
+  h2{font-family:var(--fd); font-weight:700; font-size:1.45rem; letter-spacing:-.015em; margin:44px 0 12px; line-height:1.2;}
+  h3{font-family:var(--fd); font-weight:600; font-size:1.14rem; margin:30px 0 10px;}
+  p{margin:0 0 18px; color:var(--ink);}
+  .lede{font-size:1.13rem; color:var(--mut);}
+  .lede b{color:var(--ink);}
+  a.in{border-bottom:1px solid var(--hair); transition:border-color .2s; color:var(--ir2t);}
+  html[data-theme="dark"] a.in{color:var(--ir2);}
+  a.in:hover{border-color:var(--ir2);}
+  blockquote{margin:26px 0; padding:2px 0 2px 22px; border-left:3px solid var(--grad);
+    color:var(--mut); font-size:1.05rem;}
+  blockquote p{margin:6px 0; color:var(--mut);}
+  blockquote .who{display:block; font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-top:10px;}
+  ul,ol{padding-left:26px; margin:0 0 20px; color:var(--ink);}
+  li{margin:6px 0;}
+  code{font-family:var(--fm),monospace; font-size:.86em; background:var(--paper2); border:1px solid var(--hair);
+    border-radius:6px; padding:2px 6px; color:var(--ir3t);}
+  html[data-theme="dark"] code{color:var(--ir3);}
+  pre{background:var(--paper2); border:1px solid var(--hair); border-radius:14px; padding:18px 20px; overflow-x:auto;
+    font-family:var(--fm),monospace; font-size:.83rem; line-height:1.7; margin:0 0 22px; color:var(--mut);}
+  pre code{background:none; border:none; padding:0; color:var(--ink);}
+  figure{margin:30px 0; border:1px solid var(--hair); border-radius:16px; background:var(--paper2); padding:18px;}
+  figure img{width:100%; height:auto; display:block; border-radius:10px;}
+  figcaption{font-family:var(--fm); font-size:.68rem; color:var(--dim); margin-top:12px; text-align:center; letter-spacing:.04em;}
+  hr{border:0; height:1px; background:var(--hair); margin:40px 0;}
+
+  /* ===== foot ===== */
+  .foot{padding:10px 0 70px; max-width:46rem; margin:0 auto;}
+  .foot .back{display:inline-flex; align-items:center; gap:9px; font-family:var(--fm); font-size:.74rem; letter-spacing:.05em;
+    padding:11px 18px; border-radius:999px; border:1px solid var(--hair); background:var(--paper2); transition:.24s var(--ease);}
+  .foot .back:hover{transform:translateY(-2px); border-color:var(--ir2); box-shadow:0 14px 30px -16px rgba(123,155,255,.55);}
+  .foot .back svg{width:12px; height:12px;}
+  .foot .fin-note{font-family:var(--fm); font-size:.68rem; letter-spacing:.08em; color:var(--dim); margin-top:16px; line-height:1.8;}
+
+  footer{border-top:1px solid var(--hair); padding:26px 0;}
+  .fin{max-width:1150px; margin:0 auto; padding-inline:var(--pad); display:flex; justify-content:space-between; flex-wrap:wrap;
+    gap:10px; font-family:var(--fm); font-size:.7rem; letter-spacing:.08em; color:var(--dim);}
+  .fin a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .fin a:hover{border-color:var(--ir2); color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="mastbar" id="mastbar">
+  <div class="mast">
+    <a class="who" href="../"><i></i>Prasad Patil</a>
+    <span class="meta">
+      <a href="../">Research</a>·<a href="../architect.html">Architecture</a>·<a href="../notes/">Notes</a>
+    </span>
+    <button class="kbtn" id="ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+  </div>
+</div>
+
+<main class="page">
+  <div class="navline"><a href="../notes/">← All notes</a></div>
+
+  <article>
+    <div class="meta">
+      <span>2026-08-16</span><span>· 4 min read</span><span class="tag">meta</span><span class="tag">DOA</span>
+    </div>
+    <h1>Welcome to the notes</h1>
+    <p class="lede">A résumé tells you what I did. These notes are for the part that <b>doesn't fit on a résumé</b> — the why, the wrong turns, and the long stretches of the trail.</p>
+
+    <p>This site has two pages doing very different jobs. The <a class="in" href="../">homepage</a> is a pitch, in the best sense: here is the research, here is the work, here is the trajectory through the latent space. The <a class="in" href="../architect.html">architecture page</a> is a drawing sheet — fifteen years of estates nobody wanted to touch, turned into things that ship.</p>
+
+    <p>Both are summaries. The <em>notes</em> are the rest. A couple of reasons I wanted them.</p>
+
+    <h2>Science is slow, and papers hide that</h2>
+    <p>Take the DOA framework — <b>D</b>ynamic <b>O</b>racle <b>A</b>daptation. The published line is one sentence: a quantum oracle that adapts instead of staying fixed, trading a little coherence for a lot of flexibility. The IEEE paper is the formal version. But between "what a fixed oracle can't do" and "here is the adaptive construction" there was a long, mostly unglamorous middle: simulations that contradicted the intuition, notation I had to rebuild twice, and the realization that the hardest problem wasn't the math — it was the <em>vocabulary</em>. Nobody had named this thing, because nobody had built it. We had to invent the language as we went.</p>
+
+    <p>I don't think the papers should carry that. Papers should be tight. The notes can be honest about the path.</p>
+
+    <h2>Two audiences, one voice</h2>
+    <p>I work a strange seam. By weekday I'm a <b>Solution Architect</b> — COBOL estates, mainframe migrations, GenAI rewriting code it was never trained to understand. By weekend I'm a <b>PhD researcher</b> at IIIT Nagpur, drawing quantum circuits. The questions that interest me sit exactly on that seam:</p>
+    <ul>
+      <li>What does a mainframe migration and a quantum oracle have in common? (More than you'd think — both are <em>state that has to keep working while you change the system around it</em>.)</li>
+      <li>Where does an LLM, which predicts the next token, meet a quantum state, which doesn't decide until measured? Both are machines for managing <em>uncertainty under pressure</em>.</li>
+      <li>How do you explain any of this to someone who has to sign a budget for it?</li>
+    </ul>
+
+    <h2>What this space is for</h2>
+    <p>Three kinds of posts, roughly:</p>
+    <ul>
+      <li><b>Explainers</b> — a fixed oracle vs. an adaptive one; the coherence budget; what "measure and let the oracle learn" actually means on a NISQ device.</li>
+      <li><b>Build logs</b> — MindSpark and mindspark-mcp: the decisions that a repo's README flattens away.</li>
+      <li><b>Field notes</b> — migration tradecraft, the DOA vocabulary problem, the occasional opinion.</li>
+    </ul>
+
+    <blockquote>
+      <p>"Depth gives you power, breadth gives you reach. Wisdom is the knowing when to use which."</p>
+      <span class="who">— the working motto of this whole site</span>
+    </blockquote>
+
+    <p>If you're reading via <a class="in" href="../feed.xml">RSS</a>, welcome. If you arrived from the homepage, the two posts that follow unpack the core of the research — <a class="in" href="what-adaptive-oracles-change.html">what an adaptive oracle actually changes</a>, and <a class="in" href="hybrid-vs-fully-coherent.html">the coherence budget between HQ-DOA and FQ-DOA</a>. Comments are best sent to <a class="in" href="mailto:prasadpatil252@gmail.com">email</a>; the notes are static, and so is my inbox. That's the point.</p>
+  </article>
+
+  <div class="foot">
+    <a class="back" href="../notes/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All notes</a>
+    <div class="fin-note">Next: <a href="what-adaptive-oracles-change.html" style="border-bottom:1px solid var(--hair)">What an adaptive oracle actually changes</a></div>
+  </div>
+</main>
+
+<footer>
+  <div class="fin">
+    <span>Nagpur · Maharashtra · India</span>
+    <span><a href="../feed.xml">RSS</a> · <a href="../">Home</a> · <a href="../architect.html">Architecture</a></span>
+    <span>Interference — built from scratch · GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var rootEl=document.documentElement;
+  var k=document.getElementById("ktgl");
+  function setTheme(t){
+    rootEl.setAttribute("data-theme",t);
+    k.textContent=(t==="dark")?"|0\u27E9":"|1\u27E9";
+    try{localStorage.setItem("pp-int-theme",t);}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem("pp-int-theme");}catch(e){}
+  setTheme(saved || (window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+  k.addEventListener("click",function(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");});
+  var bar=document.getElementById("mastbar");
+  function onScroll(){if(window.scrollY>8)bar.classList.add("stuck");else bar.classList.remove("stuck");}
+  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

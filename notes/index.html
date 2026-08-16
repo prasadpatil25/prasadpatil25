@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Notes · Prasad Patil</title>
+<meta name="description" content="Notes on quantum computing, architecture, and the long road from monolith to mesh — Prasad Patil, TCS Solution Architect and PhD researcher at IIIT Nagpur.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Notes · Prasad Patil">
+<meta property="og:description" content="Adaptive oracles, quantum circuits, and architecture notes.">
+<meta property="og:url" content="https://prasadpatil25.github.io/prasadpatil25/notes/">
+<meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card.png">
+<link rel="canonical" href="https://prasadpatil25.github.io/prasadpatil25/notes/">
+<link rel="alternate" type="application/rss+xml" title="Prasad Patil — Notes (RSS)" href="../feed.xml">
+<meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E16" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F6F1; --paper2:#FFFFFF; --ink:#13131B; --mut:#585866; --dim:#6A6A78; --hair:#E5E3DA;
+    --ir1:#4FE0C0; --ir2:#7B9BFF; --ir3:#C77DFF; --ir4:#FF9BC5;
+    --grad:linear-gradient(100deg,var(--ir1),var(--ir2) 38%,var(--ir3) 72%,var(--ir4));
+    --ir2t:#3560D2; --ir3t:#8A3FD6;
+    --grad-text:linear-gradient(100deg,#0B8F78,#3560D2 42%,#8A3FD6 74%,#C7519E);
+    --fd:"Syne"; --fb:"Instrument Sans"; --fm:"Spline Sans Mono";
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --pad:clamp(20px,4.5vw,48px);
+  }
+  html[data-theme="dark"]{
+    --paper:#0E0E16; --paper2:#161623; --ink:#ECEBF5; --mut:#A6A4BA; --dim:#84829B; --hair:#262639;
+    --ir2t:#7B9BFF; --ir3t:#C77DFF; --grad-text:var(--grad);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--fb),system-ui,sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  button{font:inherit; color:inherit;}
+  :focus-visible{outline:2px solid var(--ir2); outline-offset:3px; border-radius:4px;}
+  .mono{font-family:var(--fm),monospace;}
+  .g-ink{background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent;}
+
+  /* ===== masthead ===== */
+  .mastbar{position:sticky; top:0; z-index:55; background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);}
+  .mastbar.stuck{border-bottom-color:var(--hair);}
+  .mast{display:flex; justify-content:space-between; align-items:center; height:56px; padding:0 var(--pad); gap:16px; max-width:1150px; margin:0 auto;}
+  .mast .who{font-family:var(--fd); font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:9px; white-space:nowrap;}
+  .mast .who i{width:8px; height:8px; border-radius:50%; background:var(--grad); flex:none;}
+  .mast .meta{font-family:var(--fm); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    display:flex; align-items:center; gap:10px; overflow-x:auto;}
+  .mast .meta i{width:7px; height:7px; border-radius:50%; background:var(--ir1); box-shadow:0 0 8px var(--ir1); flex:none;}
+  .mast .meta a{border-bottom:1px solid transparent; transition:border-color .2s;}
+  .mast .meta a:hover{border-color:var(--ir2);}
+  .mast .meta a.cur{color:var(--ink);}
+  @media(max-width:640px){.mast .meta span.ps{display:none;}}
+  .kbtn{font-family:var(--fm); font-size:.74rem; border:1px solid var(--hair); border-radius:9px; padding:5px 9px;
+    background:var(--paper2); cursor:pointer; color:var(--mut); transition:.2s var(--ease); flex:none;}
+  .kbtn:hover{color:var(--ink); border-color:var(--ir2);}
+  .rss{display:inline-flex; align-items:center; gap:7px; font-family:var(--fm); font-size:.7rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--dim); border:1px solid var(--hair); border-radius:999px; padding:7px 13px;
+    background:var(--paper2); transition:.2s var(--ease); flex:none;}
+  .rss:hover{color:var(--ink); border-color:var(--ir2); transform:translateY(-1px);}
+  .rss svg{width:12px; height:12px;}
+
+  /* ===== layout ===== */
+  .page{max-width:1150px; margin:0 auto; padding-inline:var(--pad);}
+  .hero{padding:84px 0 30px;}
+  .kick{font-family:var(--fm); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mut); margin:0 0 22px;
+    display:flex; align-items:center; gap:12px;}
+  .kick::before{content:""; width:30px; height:1px; background:var(--grad);}
+  h1{font-family:var(--fd); font-weight:800; font-size:clamp(2.1rem,5vw,3.4rem); line-height:1.04; letter-spacing:-.025em; margin:0 0 16px;}
+  .sub{font-size:1.05rem; color:var(--mut); max-width:56ch; margin:0 0 28px;}
+  .sub b{color:var(--ink); font-weight:600;}
+
+  /* ===== post cards ===== */
+  .list{display:grid; gap:16px; padding:10px 0 70px;}
+  .card{display:block; background:var(--paper2); border:1px solid var(--hair); border-radius:16px; padding:24px 26px;
+    transition:transform .24s var(--ease), border-color .24s var(--ease), box-shadow .24s var(--ease);}
+  .card:hover{transform:translateY(-2px); border-color:var(--ir2); box-shadow:0 18px 40px -22px rgba(123,155,255,.55);}
+  .card .meta{font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--dim);
+    display:flex; flex-wrap:wrap; gap:8px 14px; margin-bottom:10px;}
+  .card h2{font-family:var(--fd); font-weight:700; font-size:1.32rem; letter-spacing:-.01em; margin:0 0 8px; line-height:1.2;}
+  .card:hover h2{color:var(--ir3t);}
+  .card p{color:var(--mut); font-size:.95rem; margin:0;}
+  .tag{font-family:var(--fm); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    border:1px solid var(--hair); border-radius:999px; padding:3px 9px; background:var(--paper);}
+
+  /* ===== footer ===== */
+  footer{border-top:1px solid var(--hair); padding:26px 0;}
+  .fin{max-width:1150px; margin:0 auto; padding-inline:var(--pad); display:flex; justify-content:space-between; flex-wrap:wrap;
+    gap:10px; font-family:var(--fm); font-size:.7rem; letter-spacing:.08em; color:var(--dim);}
+  .fin a{border-bottom:1px solid var(--hair); transition:border-color .2s;}
+  .fin a:hover{border-color:var(--ir2); color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="mastbar" id="mastbar">
+  <div class="mast">
+    <a class="who" href="../"><i></i>Prasad Patil</a>
+    <span class="meta">
+      <a href="../">Research</a>·<a href="../architect.html">Architecture</a>·<a href="./" class="cur">Notes</a>
+      <span class="ps">&nbsp;·&nbsp;Nagpur, IN</span>
+    </span>
+    <a class="rss" href="../feed.xml" title="Subscribe to the Notes feed">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>RSS</a>
+    <button class="kbtn" id="ktgl" aria-label="Toggle light and dark theme" title="Flip the basis state">|1⟩</button>
+  </div>
+</div>
+
+<main class="page">
+  <header class="hero">
+    <p class="kick">Notes from the lab</p>
+    <h1>Adaptive oracles,<br>written down.</h1>
+    <p class="sub">Quantum computing and machine learning meet architecture here. Longer-form thinking than the résumé, shorter than the papers — plus the occasional build log.</p>
+    <a class="rss" href="../feed.xml">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>Subscribe via RSS</a>
+  </header>
+
+  <div class="list">
+
+    <a class="card" href="welcome-to-notes.html">
+      <div class="meta"><span>2026-08-16</span><span class="tag">meta</span><span class="tag">DOA</span></div>
+      <h2>Welcome to the notes</h2>
+      <p>Why a writing section on a résumé site — and what this space is for: the DOA framework, the modernization tradecraft, and the things in between.</p>
+    </a>
+
+    <a class="card" href="what-adaptive-oracles-change.html">
+      <div class="meta"><span>2026-08-10</span><span class="tag">quantum</span><span class="tag">HQ-DOA</span></div>
+      <h2>What an adaptive oracle actually changes</h2>
+      <p>A walk through the idea behind the first DOA paper: a quantum oracle that isn't fixed in advance — and what you give up and gain when it isn't.</p>
+    </a>
+
+    <a class="card" href="hybrid-vs-fully-coherent.html">
+      <div class="meta"><span>2026-08-02</span><span class="tag">quantum</span><span class="tag">FQ-DOA</span></div>
+      <h2>Hybrid vs. fully coherent: the coherence budget</h2>
+      <p>HQ-DOA trades a little coherence for flexibility; FQ-DOA keeps the oracle coherent end to end. Notes on the trade you're actually making.</p>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <div class="fin">
+    <span>Nagpur · Maharashtra · India</span>
+    <span><a href="../feed.xml">RSS</a> · <a href="../">Home</a> · <a href="../architect.html">Architecture</a></span>
+    <span>Interference — built from scratch · GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var rootEl=document.documentElement;
+  var k=document.getElementById("ktgl");
+  function setTheme(t){
+    rootEl.setAttribute("data-theme",t);
+    k.textContent=(t==="dark")?"|0\u27E9":"|1\u27E9";
+    try{localStorage.setItem("pp-int-theme",t);}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem("pp-int-theme");}catch(e){}
+  setTheme(saved || (window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+  k.addEventListener("click",function(){setTheme(rootEl.getAttribute("data-theme")==="dark"?"light":"dark");});
+  var bar=document.getElementById("mastbar");
+  function onScroll(){if(window.scrollY>8)bar.classList.add("stuck");else bar.classList.remove("stuck");}
+  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
