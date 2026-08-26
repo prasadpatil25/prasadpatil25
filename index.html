@@ -557,8 +557,8 @@
   <section class="sec latest" aria-label="Latest updates">
     <div class="wrap">
       <div class="sh reveal" style="margin-bottom:14px"><span class="lab">Latest</span><span class="rule"></span></div>
-      <div class="lt reveal"><span class="d">2026</span><span><b>Notes are live</b> &mdash; a new writing section: the DOA framework, explainers, and build logs. <a href="notes/" data-track="/cta/to-notes">Read the notes</a> · <a href="feed.xml" data-track="/cta/rss">RSS</a></span></div>
-      <div class="lt reveal"><span class="d">2026</span><span><b>HQ-DOA published</b> &mdash; &ldquo;Quantum State Measurement System With Dynamic Oracle Adaptation&rdquo;, IEEE Trans. Instrumentation &amp; Measurement - first quantum-computing publication from IIIT Nagpur. <a href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">DOI</a></span></div>
+      <div class="lt reveal"><span class="d">2026</span><span><b>Notes are live</b> &dash; a new writing section: the DOA framework, explainers, and build logs. <a href="notes/" data-track="/cta/to-notes">Read the notes</a> · <a href="feed.xml" data-track="/cta/rss">RSS</a></span></div>
+      <div class="lt reveal"><span class="d">2026</span><span><b>HQ-DOA published</b> &dash; &ldquo;Quantum State Measurement System With Dynamic Oracle Adaptation&rdquo;, IEEE Trans. Instrumentation &amp; Measurement - first quantum-computing publication from IIIT Nagpur. <a href="https://doi.org/10.1109/TIM.2026.3659640" target="_blank" rel="noopener">DOI</a></span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>FQ-DOA submitted</b> to IEEE Trans. Emerging Topics in Computing - under review.</span></div>
       <div class="lt reveal"><span class="d">2026</span><span><b>MindSpark released</b> - zero-dependency collaborative mind-mapping. <a href="https://github.com/prasadpatil25/MindSpark" target="_blank" rel="noopener">Repo</a></span></div>
       <div class="lt reveal"><span class="d">2024</span><span><b>ACM India Anveshan Setu Fellowship</b> - host mentorship at IIT Hyderabad.</span></div>
@@ -688,7 +688,7 @@
           <p class="venue">IEEE Transactions on Instrumentation &amp; Measurement · 2026</p>
           <h3>Quantum State Measurement System With Dynamic Oracle Adaptation for Enhanced Parameter Estimation in NISQ Devices</h3>
           <p class="auth">P. P. Patil · J. Tembhurne · S. J. Choudhury &nbsp;·&nbsp; <span class="mono" style="color:var(--ir3t)">HQ-DOA</span></p>
-          <p class="auth" style="margin-top:8px">Integrates Simon&rsquo;s period detection with Grover&rsquo;s amplitude amplification through dynamic oracle adaptation. Eliminates mid-circuit state collapse by synthesizing measurement oracles from period-detection results &mdash; lifting measurement success from <b style="color:var(--ink)">15% to 60% on the IBM Brisbane processor</b>, at query complexity O((2<sup>n&minus;1</sup>/k)<sup>&frac12;</sup>).</p>
+          <p class="auth" style="margin-top:8px">Integrates Simon&rsquo;s period detection with Grover&rsquo;s amplitude amplification through dynamic oracle adaptation. Eliminates mid-circuit state collapse by synthesizing measurement oracles from period-detection results &dash; lifting measurement success from <b style="color:var(--ink)">15% to 60% on the IBM Brisbane processor</b>, at query complexity O((2<sup>n&minus;1</sup>/k)<sup>&frac12;</sup>).</p>
           <p class="first">First quantum-computing publication from IIIT Nagpur</p>
         </div>
         <div class="pr">
@@ -723,9 +723,9 @@
         </div>
 
         <ol class="hq-steps" id="hqsteps">
-          <li class="on" data-a="1"><b>1</b> Simon &mdash; find the hidden period</li>
-          <li data-a="2"><b>2</b> DOA &mdash; synthesize the oracle</li>
-          <li data-a="3"><b>3</b> Grover &mdash; amplify the reduced space</li>
+          <li class="on" data-a="1"><b>1</b> Simon &dash; find the hidden period</li>
+          <li data-a="2"><b>2</b> DOA &dash; synthesize the oracle</li>
+          <li data-a="3"><b>3</b> Grover &dash; amplify the reduced space</li>
         </ol>
 
         <div class="hq-body">
@@ -734,7 +734,7 @@
             <p class="hq-h">constraints &nbsp;y &middot; s = 0</p>
             <div class="hq-eqs" id="hqeqs"></div>
             <p class="hq-h" style="margin-top:14px">state</p>
-            <p class="hq-read" id="hqread">&mdash;</p>
+            <p class="hq-read" id="hqread">&dash;</p>
           </aside>
         </div>
 
@@ -743,7 +743,7 @@
           <button class="q-btn" id="hqrun">Run</button>
           <button class="q-btn" id="hqreset">Reset</button>
         </div>
-        <p class="q-cap">Each Simon query returns one linear constraint on the hidden period <b>s</b>. Once n&minus;1 independent constraints pin it down, DOA rebuilds the oracle around that structure &mdash; and because f(x) = f(x&oplus;s), every state pairs with a partner and <b>the search space folds in half</b>. Grover then runs over what's left, reaching the target in fewer queries than a blind search. <span style="color:var(--dim)">Schematic illustration of the pipeline; the quantum steps are simulated classically, not a reproduction of the paper's hardware results.</span></p>
+        <p class="q-cap">Each Simon query returns one linear constraint on the hidden period <b>s</b>. Once n&minus;1 independent constraints pin it down, DOA rebuilds the oracle around that structure &dash; and because f(x) = f(x&oplus;s), every state pairs with a partner and <b>the search space folds in half</b>. Grover then runs over what's left, reaching the target in fewer queries than a blind search. <span style="color:var(--dim)">Schematic illustration of the pipeline; the quantum steps are simulated classically, not a reproduction of the paper's hardware results.</span></p>
       </div>
 
       
@@ -761,7 +761,7 @@
         <div class="dd-grid">
           <div class="dd-p fx" id="ddpF">
             <div class="dd-t"><h4>Fixed oracle</h4><span class="u">U&#402;</span></div>
-            <p class="dd-f">phase &theta; = 180&deg; &mdash; every query, forever</p>
+            <p class="dd-f">phase &theta; = 180&deg; &dash; every query, forever</p>
             <div class="dd-bars" id="ddbF" aria-hidden="true"></div>
             <div class="dd-n"><b id="ddpvF">6%</b><span id="ddthF">&theta; 180&deg;</span></div>
           </div>
@@ -785,7 +785,7 @@
           <button class="q-btn" id="ddrun">Run</button>
           <button class="q-btn" id="ddreset">Reset</button>
         </div>
-        <p class="q-cap" id="ddcap">Both start identically. The fixed oracle keeps rotating past the target and <b>tears its own amplitude back down</b> &mdash; it has no way to know it already arrived. The adaptive oracle reads the outcome each round, re-tunes &theta;, and locks on. <span style="color:var(--dim)">Schematic illustration of the DOA idea &mdash; a greedy feedback rule stands in for the adaptation strategy; not a reproduction of the paper's results.</span></p>
+        <p class="q-cap" id="ddcap">Both start identically. The fixed oracle keeps rotating past the target and <b>tears its own amplitude back down</b> &dash; it has no way to know it already arrived. The adaptive oracle reads the outcome each round, re-tunes &theta;, and locks on. <span style="color:var(--dim)">Schematic illustration of the DOA idea &dash; a greedy feedback rule stands in for the adaptation strategy; not a reproduction of the paper's results.</span></p>
       </div>
     </div>
   </section>
@@ -910,7 +910,7 @@
           <div style="flex:1 1 340px">
             <p class="bA-lab"><em>A-100</em> The other half</p>
             <h3><s>Monolith</s> &rarr; <u>Mesh</u></h3>
-            <p>Fifteen years as a <b>Solution Architect at TCS</b> &mdash; moving legacy enterprise estates to cloud-native architecture. Mainframe and COBOL to Java microservices on Azure, with GenAI reading the code nobody documented. Two granted patents.</p>
+            <p>Fifteen years as a <b>Solution Architect at TCS</b> &dash; moving legacy enterprise estates to cloud-native architecture. Mainframe and COBOL to Java microservices on Azure, with GenAI reading the code nobody documented. Two granted patents.</p>
           </div>
           <span class="bA-go">Architecture work &rarr;</span>
         </div>
