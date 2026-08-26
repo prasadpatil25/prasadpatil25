@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html">
 <meta property="og:image" content="https://prasadpatil25.github.io/prasadpatil25/og-card.png">
 <link rel="canonical" href="https://prasadpatil25.github.io/prasadpatil25/notes/hybrid-vs-fully-coherent.html">
-<link rel="alternate" type="application/rss+xml" title="Prasad Patil — Notes (RSS)" href="../feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Prasad Patil - Notes (RSS)" href="../feed.xml">
 <meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E0E16" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -137,23 +137,23 @@
       <span>2026-08-02</span><span>· 5 min read</span><span class="tag">quantum</span><span class="tag">FQ-DOA</span>
     </div>
     <h1>Hybrid vs. fully coherent: the coherence budget</h1>
-    <p class="lede">The first DOA note ended on the trade: <em>costs coherence, buys flexibility</em>. This note is about the trade itself — where the coherence goes, and what the two architectures in the family do differently with it.</p>
+    <p class="lede">The first DOA note ended on the trade: <em>costs coherence, buys flexibility</em>. This note is about the trade itself - where the coherence goes, and what the two architectures in the family do differently with it.</p>
 
-    <p>Both architectures answer the same problem — estimating a parameter with an oracle that can learn it mid-flight. The difference is <b>where the learning happens</b>, and that single choice decides the cost model.</p>
+    <p>Both architectures answer the same problem - estimating a parameter with an oracle that can learn it mid-flight. The difference is <b>where the learning happens</b>, and that single choice decides the cost model.</p>
 
     <h2>HQ-DOA: learn between runs</h2>
-    <p>HQ-DOA — <b>H</b>ybrid <b>Q</b>uantum <b>DOA</b> — is the practical entry point. The quantum circuit runs a measurement; the classical side reads the outcome, updates its model of the parameter, and steers the next run's oracle accordingly. The oracle's parameters change <em>between</em> runs.</p>
+    <p>HQ-DOA - <b>H</b>ybrid <b>Q</b>uantum <b>DOA</b> - is the practical entry point. The quantum circuit runs a measurement; the classical side reads the outcome, updates its model of the parameter, and steers the next run's oracle accordingly. The oracle's parameters change <em>between</em> runs.</p>
     <ul>
-      <li><b>Coherence cost:</b> near zero inside any single run. The circuit that runs is essentially a fixed-oracle circuit — a well-understood, robust object.</li>
+      <li><b>Coherence cost:</b> near zero inside any single run. The circuit that runs is essentially a fixed-oracle circuit - a well-understood, robust object.</li>
       <li><b>Flexibility cost:</b> the adaptation is coarse-grained. You converge run by run, not shot by shot. Rapidly drifting parameters outpace you.</li>
-      <li><b>Hardware reality:</b> runs today's NISQ devices without heroics. This is why it shipped first — and why it was the first quantum-computing publication from IIIT Nagpur.</li>
+      <li><b>Hardware reality:</b> runs today's NISQ devices without heroics. This is why it shipped first - and why it was the first quantum-computing publication from IIIT Nagpur.</li>
     </ul>
 
     <h2>FQ-DOA: learn inside the evolution</h2>
-    <p>FQ-DOA — <b>F</b>ully coherent — moves the feedback <em>inside</em> the quantum evolution. The oracle's adaptation is unitary; the state never leaves the coherent register to consult a classical model. The parameter and the oracle co-evolve within a single run.</p>
+    <p>FQ-DOA - <b>F</b>ully coherent - moves the feedback <em>inside</em> the quantum evolution. The oracle's adaptation is unitary; the state never leaves the coherent register to consult a classical model. The parameter and the oracle co-evolve within a single run.</p>
     <ul>
       <li><b>Flexibility gain:</b> continuous, shot-level adaptation. The oracle tracks the parameter as it moves, which is exactly what you want in high-rate metrology.</li>
-      <li><b>Coherence cost:</b> every adaptation step spends coherence. A coherently adaptive oracle has a finite budget of change before decoherence wins — you're buying flexibility with your most precious resource.</li>
+      <li><b>Coherence cost:</b> every adaptation step spends coherence. A coherently adaptive oracle has a finite budget of change before decoherence wins - you're buying flexibility with your most precious resource.</li>
       <li><b>Hardware reality:</b> demanding. This is the paper now under review (IEEE Trans. Emerging Topics in Computing), and the whole point of the construction is to make the spending <em>explicit and budgetable</em> rather than accidental.</li>
     </ul>
 
@@ -169,17 +169,17 @@
     </table>
 
     <h2>Why "budget" is the right word</h2>
-    <p>The reason I keep calling it a budget and not a trade-off is that a budget is something you can <em>account for</em>. In a fixed-oracle world, coherence decay is a nuisance to be minimized away. In the FQ-DOA world, coherence is denominated — you know how much the adaptation spends, you know how much the run can afford, and you can choose the operating point: more adaptation, less run length; or longer runs, slower adaptation.</p>
+    <p>The reason I keep calling it a budget and not a trade-off is that a budget is something you can <em>account for</em>. In a fixed-oracle world, coherence decay is a nuisance to be minimized away. In the FQ-DOA world, coherence is denominated - you know how much the adaptation spends, you know how much the run can afford, and you can choose the operating point: more adaptation, less run length; or longer runs, slower adaptation.</p>
 
-    <p>That's the shift in mindset the framework pushes for, and it's the same mindset shift I've lived through in enterprise architecture. When you treat a legacy system's downtime budget as a resource to be <em>managed</em> rather than a failure to be avoided, migration strategy changes entirely — you stop asking "can we afford any downtime?" and start asking "what's the cheapest state change that gets us there?"</p>
+    <p>That's the shift in mindset the framework pushes for, and it's the same mindset shift I've lived through in enterprise architecture. When you treat a legacy system's downtime budget as a resource to be <em>managed</em> rather than a failure to be avoided, migration strategy changes entirely - you stop asking "can we afford any downtime?" and start asking "what's the cheapest state change that gets us there?"</p>
 
     <blockquote>
-      <p>"You can't optimize what you refuse to measure — coherence included."</p>
-      <span class="who">— a translation of a very long footnote in the FQ-DOA draft</span>
+      <p>"You can't optimize what you refuse to measure - coherence included."</p>
+      <span class="who">- a translation of a very long footnote in the FQ-DOA draft</span>
     </blockquote>
 
     <h2>The morphological edge case</h2>
-    <p>The third line, <b>QDOA</b>, is the one that escapes both columns of the table. Morphological adaptation changes the oracle's <em>structure</em>, not just its parameters — a different operator shape entirely. It's the least mature and the most interesting: if parameter adaptation is the budget question, morphological adaptation is the <em>design</em> question, and it comes with the vocabulary problem I mentioned in the <a class="in" href="welcome-to-notes.html">welcome note</a>. You can't grep for a thing nobody has named.</p>
+    <p>The third line, <b>QDOA</b>, is the one that escapes both columns of the table. Morphological adaptation changes the oracle's <em>structure</em>, not just its parameters - a different operator shape entirely. It's the least mature and the most interesting: if parameter adaptation is the budget question, morphological adaptation is the <em>design</em> question, and it comes with the vocabulary problem I mentioned in the <a class="in" href="welcome-to-notes.html">welcome note</a>. You can't grep for a thing nobody has named.</p>
 
     <p>Start from the beginning if you landed here first: <a class="in" href="what-adaptive-oracles-change.html">what an adaptive oracle actually changes</a>. The homepage's <a class="in" href="../#research">interactive head-to-head</a> is the fastest way to feel the difference without the math.</p>
   </article>
@@ -195,7 +195,7 @@
   <div class="fin">
     <span>Nagpur · Maharashtra · India</span>
     <span><a href="../feed.xml">RSS</a> · <a href="../">Home</a> · <a href="../architect.html">Architecture</a></span>
-    <span>Interference — built from scratch · GitHub Pages</span>
+    <span>Interference - built from scratch · GitHub Pages</span>
   </div>
 </footer>
 
